@@ -2,7 +2,7 @@
   "name": "content-translation",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://baba786.github.io/Content_Translation",
+  "homepage": "https://baba786.github.io/Content_Translation/",
   "type": "module",
   "scripts": {
     "dev": "vite",
