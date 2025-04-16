@@ -378,7 +378,7 @@ const WikipediaUI = () => {
                   <div className="space-y-6">
                     {/* Collections preview */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Collections</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Collections</h4>
                       <div className="flex flex-wrap gap-2 mb-3">
                         {standaloneCollections.slice(0, 3).map(collection => (
                           <button 
@@ -390,7 +390,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
                         onClick={() => setActiveTab('collections')}
                       >
                         <span>Browse all</span>
@@ -400,7 +400,7 @@ const WikipediaUI = () => {
                     
                     {/* Regions preview */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Regions</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Regions</h4>
                       <div className="flex flex-wrap gap-2 mb-3">
                         {['Africa', 'Asia', 'Europe'].map(region => (
                           <button 
@@ -412,7 +412,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
                         onClick={() => setActiveTab('regions')}
                       >
                         <span>Browse all</span>
@@ -423,7 +423,7 @@ const WikipediaUI = () => {
                     {/* Topics preview - with three category sections */}
                     {/* Culture category */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Culture</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Culture</h4>
                       <div className="flex flex-wrap gap-2 mb-3">
                         {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
                           <button 
@@ -435,7 +435,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
@@ -445,7 +445,7 @@ const WikipediaUI = () => {
                     
                     {/* History and society category */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">History and society</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">History and society</h4>
                       <div className="flex flex-wrap gap-2 mb-3">
                         {['History', 'Education', 'Society', 'Philosophy and religion'].slice(0, 4).map(topic => (
                           <button 
@@ -457,7 +457,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
@@ -467,7 +467,7 @@ const WikipediaUI = () => {
                     
                     {/* Science category */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Science, technology and math</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Science, technology and math</h4>
                       <div className="flex flex-wrap gap-2 mb-3">
                         {['Medicine and health', 'Technology', 'Biology', 'Physics'].slice(0, 4).map(topic => (
                           <button 
@@ -479,7 +479,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
