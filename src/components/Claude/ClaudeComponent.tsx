@@ -14,7 +14,7 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 
-// Define proper types
+// Component interfaces
 interface CollectionGroup {
   id: string;
   name: string;
@@ -31,12 +31,6 @@ interface Suggestion {
   image?: boolean;
 }
 
-type TopicsState = {
-  culture: boolean;
-  history: boolean;
-  science: boolean;
-}
-
 const WikipediaUI = () => {
   // Main state variables for the prototype
   const [isPanelOpen, setIsPanelOpen] = useState(false);
@@ -47,13 +41,6 @@ const WikipediaUI = () => {
   const [notification, setNotification] = useState<string | null>(null);
   const [dismissedSuggestions, setDismissedSuggestions] = useState<string[]>([]);
   const [bookmarkedSuggestions, setBookmarkedSuggestions] = useState<string[]>(['elv']);
-  const [showAllCollections, setShowAllCollections] = useState(false);
-  const [showAllTopics, setShowAllTopics] = useState<TopicsState>({
-    culture: false,
-    history: false,
-    science: false
-  });
-  const [showAllRegions, setShowAllRegions] = useState(false);
 
   // Simulated collections data
   const collectionGroups: CollectionGroup[] = [
