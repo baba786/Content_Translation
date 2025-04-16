@@ -152,134 +152,142 @@ const WikipediaUI = () => {
   );
 
   return (
-    <div className="wikipedia-ui">
+    <div className="w-full font-sans bg-gray-50 rounded-lg overflow-hidden shadow-lg border border-gray-200">
       {/* Notification toast */}
       {notification && (
-        <div className="notification">
+        <div className="fixed top-4 right-4 bg-blue-600 text-white py-2 px-4 rounded-md shadow-lg z-50">
           {notification}
         </div>
       )}
       
       {/* Wikipedia Header */}
-      <div className="header">
-        <div className="header-logo">
-          <span className="logo-text">W<span className="logo-text-small">IKIPEDIA</span></span>
-          <span className="translate-text">Translate page</span>
+      <div className="border-b border-gray-300 px-4 py-2 flex items-center justify-between bg-white">
+        <div className="flex items-center space-x-2">
+          <span className="font-serif text-xl font-semibold">W<span className="text-lg">IKIPEDIA</span></span>
+          <span className="text-gray-500 ml-2">Translate page</span>
         </div>
-        <div className="user-menu">
-          <div className="user-button">
-            <span className="user-text">User</span>
-            <ChevronDown className="sidebar-icon" />
+        <div className="flex items-center">
+          <div className="mr-2 bg-gray-100 rounded-md px-3 py-1 flex items-center cursor-pointer hover:bg-gray-200">
+            <span className="text-blue-600">User</span>
+            <ChevronDown className="w-4 h-4 ml-1 text-blue-600" />
           </div>
         </div>
       </div>
       
       {/* Main Content */}
-      <div className="main-content">
+      <div className="flex bg-gray-100" style={{ minHeight: '600px' }}>
         {/* Left Sidebar */}
-        <div className="sidebar">
-          <div className="sidebar-item active">
-            <Lightbulb className="sidebar-icon" />
+        <div className="w-48 bg-white border-r border-gray-300 p-4">
+          <div className="flex items-center text-blue-600 mb-4 cursor-pointer hover:bg-blue-50 px-2 py-1 rounded">
+            <Lightbulb className="w-5 h-5 mr-2" />
             <span>Suggestions</span>
           </div>
-          <div className="sidebar-item">
-            <Edit className="sidebar-icon" />
+          <div className="flex items-center text-gray-600 mb-4 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded">
+            <Edit className="w-5 h-5 mr-2" />
             <span>In progress</span>
           </div>
-          <div className="sidebar-item">
-            <Check className="sidebar-icon" />
+          <div className="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded">
+            <Check className="w-5 h-5 mr-2" />
             <span>Published</span>
           </div>
         </div>
         
         {/* Main Content Area */}
-        <div className="content-area">
-          <button className="new-translation-btn">
-            <Plus className="btn-icon" />
+        <div className="flex-1 p-4">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 flex items-center hover:bg-blue-700 transition-colors">
+            <Plus className="w-4 h-4 mr-1" />
             New translation
           </button>
           
-          <div className="card">
-            <div className="card-header">
-              <h2 className="card-title">Suggestions</h2>
-              <div className="language-selector">
-                <div className="language-item">
+          <div className="bg-white rounded-md shadow p-6 mb-4">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-medium">Suggestions</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1 cursor-pointer">
                   <span>English</span>
-                  <ChevronDown />
+                  <ChevronDown className="w-4 h-4" />
                 </div>
                 <span>→</span>
-                <div className="language-item">
+                <div className="flex items-center space-x-1 cursor-pointer">
                   <span>हिन्दी</span>
-                  <ChevronDown />
+                  <ChevronDown className="w-4 h-4" />
                 </div>
               </div>
             </div>
             
             {/* Filter Controls */}
-            <div className="filters">
+            <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-4">
               <button 
-                className={`filter-btn ${activeFilters.includes('For you') ? 'active' : 'inactive'}`}
+                className={`px-3 py-1 rounded-full flex items-center text-sm ${
+                  activeFilters.includes('For you') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                }`}
                 onClick={() => toggleFilter('For you')}
               >
-                <User className="btn-icon" />
+                <User className="w-4 h-4 mr-1" />
                 <span>For you</span>
               </button>
               
               <button 
-                className={`filter-btn ${activeFilters.includes('Popular') ? 'active' : 'inactive'}`}
+                className={`px-3 py-1 rounded-full flex items-center text-sm ${
+                  activeFilters.includes('Popular') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                }`}
                 onClick={() => toggleFilter('Popular')}
               >
-                <Bookmark className="btn-icon" />
+                <Bookmark className="w-4 h-4 mr-1" />
                 <span>Popular</span>
               </button>
               
               <button 
-                className={`filter-btn ${isPanelOpen ? 'active' : 'inactive'}`}
+                className={`px-3 py-1 rounded-full flex items-center text-sm ${
+                  isPanelOpen ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
+                }`}
                 onClick={togglePanel}
               >
-                <MoreHorizontal className="btn-icon" />
+                <MoreHorizontal className="w-4 h-4 mr-1" />
                 <span>More</span>
               </button>
             </div>
             
             {/* Main Suggestions List */}
-            <div className="suggestions-section">
-              <h3 className="section-title">
+            <div className="mt-4">
+              <h3 className="text-lg font-medium text-gray-700 mb-2">
                 Recommended for you
               </h3>
               
               {filteredSuggestions.map(item => (
-                <div key={item.id} className="suggestion-item">
-                  <div className="suggestion-image">
+                <div key={item.id} className="flex items-start py-3 border-b border-gray-200">
+                  <div className="w-10 h-10 bg-gray-200 rounded-sm flex items-center justify-center mr-3">
                     {item.image ? (
-                      <div style={{ width: '100%', height: '100%', backgroundColor: '#9ca3af' }} />
+                      <div className="w-full h-full bg-gray-400" />
                     ) : (
-                      <FileText />
+                      <FileText className="w-6 h-6 text-gray-500" />
                     )}
                   </div>
-                  <div className="suggestion-content">
-                    <div className="suggestion-header">
-                      <h4 className="suggestion-title">{item.title}</h4>
-                      <div className="suggestion-actions">
+                  <div className="flex-1">
+                    <div className="flex justify-between">
+                      <h4 className="font-medium">{item.title}</h4>
+                      <div className="flex space-x-1">
                         <button 
-                          className={`action-btn ${bookmarkedSuggestions.includes(item.id) ? 'active' : ''}`}
+                          className={`text-gray-400 hover:text-blue-600 ${
+                            bookmarkedSuggestions.includes(item.id) ? 'text-blue-600' : ''
+                          }`}
                           onClick={() => toggleBookmark(item.id)}
                           aria-label="Bookmark"
                         >
-                          <Bookmark fill={bookmarkedSuggestions.includes(item.id) ? 'currentColor' : 'none'} />
+                          <Bookmark className="w-5 h-5" fill={bookmarkedSuggestions.includes(item.id) ? 'currentColor' : 'none'} />
                         </button>
                         <button 
-                          className="action-btn"
+                          className="text-gray-400 hover:text-gray-600"
                           onClick={() => dismissSuggestion(item.id)}
                           aria-label="Dismiss"
                         >
-                          <X />
+                          <X className="w-5 h-5" />
                         </button>
                       </div>
                     </div>
-                    <p className="suggestion-description">{item.description}</p>
+                    <p className="text-sm text-gray-500">{item.description}</p>
                     {item.sections && (
-                      <p className="suggestion-sections">{item.sections} sections</p>
+                      <p className="text-xs text-gray-400 mt-1">{item.sections} sections</p>
                     )}
                   </div>
                 </div>
@@ -290,40 +298,40 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel-overlay">
-            <div className="panel">
-              <div className="panel-header">
-                <h3 className="panel-title">Adjust suggestions</h3>
+          <div className="fixed inset-0 z-50 flex justify-end bg-black bg-opacity-30">
+            <div className="w-80 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
-                  className="close-btn"
+                  className="text-gray-500 hover:text-gray-700"
                   onClick={() => setIsPanelOpen(false)}
                 >
-                  <X />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
               
               {/* Panel tabs */}
-              <div className="tabs">
+              <div className="flex border-b mb-4 overflow-x-auto">
                 <button 
-                  className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+                  className={`pb-2 px-4 font-medium ${activeTab === 'all' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
                   onClick={() => setActiveTab('all')}
                 >
                   All
                 </button>
                 <button 
-                  className={`tab ${activeTab === 'collections' ? 'active' : ''}`}
+                  className={`pb-2 px-4 font-medium ${activeTab === 'collections' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
                   onClick={() => setActiveTab('collections')}
                 >
                   Collections
                 </button>
                 <button 
-                  className={`tab ${activeTab === 'regions' ? 'active' : ''}`}
+                  className={`pb-2 px-4 font-medium ${activeTab === 'regions' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
                   onClick={() => setActiveTab('regions')}
                 >
                   Regions
                 </button>
                 <button 
-                  className={`tab ${activeTab === 'topics' ? 'active' : ''}`}
+                  className={`pb-2 px-4 font-medium ${activeTab === 'topics' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
                   onClick={() => setActiveTab('topics')}
                 >
                   Topics
@@ -332,17 +340,17 @@ const WikipediaUI = () => {
               
               {/* Active filters */}
               {activeFilters.length > 0 && (
-                <div className="active-filters">
-                  <h4 className="filter-title">Active filters</h4>
-                  <div className="filter-chips">
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-500 mb-2">Active filters</h4>
+                  <div className="flex flex-wrap gap-2">
                     {activeFilters.map(filter => (
-                      <span key={filter} className="filter-chip">
+                      <span key={filter} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
                         {filter}
                         <button 
-                          className="close-btn" 
+                          className="ml-1 focus:outline-none" 
                           onClick={() => toggleFilter('For you')}
                         >
-                          <X />
+                          <X className="w-4 h-4" />
                         </button>
                       </span>
                     ))}
@@ -351,131 +359,131 @@ const WikipediaUI = () => {
               )}
               
               {/* Search input */}
-              <div className="search-container">
-                <div className="search-input-wrapper">
+              <div className="mb-4">
+                <div className="relative">
                   <input 
                     type="text" 
                     placeholder="Search for a topic" 
-                    className="search-input"
+                    className="w-full border border-gray-300 rounded px-3 py-2 pl-9"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  <Search className="search-icon" />
+                  <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
                 </div>
               </div>
               
-              <div className="tab-content">
+              <div className="space-y-6">
                 {/* All tab with preview items and browse links */}
                 {activeTab === 'all' && (
-                  <div className="tab-content">
+                  <div className="space-y-6">
                     {/* Collections preview */}
-                    <div className="section">
-                      <h4 className="section-header">Collections</h4>
-                      <div className="chip-container">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Collections</h4>
+                      <div className="flex flex-wrap gap-2 mb-3">
                         {standaloneCollections.slice(0, 3).map(collection => (
                           <button 
                             key={collection}
-                            className="chip"
+                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
                           >
                             {collection}
                           </button>
                         ))}
                       </div>
                       <button 
-                        className="browse-link"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('collections')}
                       >
                         <span>Browse all</span>
-                        <ChevronRight className="chevron-icon" />
+                        <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </div>
                     
                     {/* Regions preview */}
-                    <div className="section">
-                      <h4 className="section-header">Regions</h4>
-                      <div className="chip-container">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Regions</h4>
+                      <div className="flex flex-wrap gap-2 mb-3">
                         {['Africa', 'Asia', 'Europe'].map(region => (
                           <button 
                             key={region}
-                            className="chip"
+                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
                           >
                             {region}
                           </button>
                         ))}
                       </div>
                       <button 
-                        className="browse-link"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('regions')}
                       >
                         <span>Browse all</span>
-                        <ChevronRight className="chevron-icon" />
+                        <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </div>
                     
                     {/* Topics preview - with three category sections */}
                     {/* Culture category */}
-                    <div className="section">
-                      <h4 className="section-header">Culture</h4>
-                      <div className="chip-container">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Culture</h4>
+                      <div className="flex flex-wrap gap-2 mb-3">
                         {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
                           <button 
                             key={topic}
-                            className="chip"
+                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
                           >
                             {topic}
                           </button>
                         ))}
                       </div>
                       <button 
-                        className="browse-link"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
-                        <ChevronRight className="chevron-icon" />
+                        <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </div>
                     
                     {/* History and society category */}
-                    <div className="section">
-                      <h4 className="section-header">History and society</h4>
-                      <div className="chip-container">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">History and society</h4>
+                      <div className="flex flex-wrap gap-2 mb-3">
                         {['History', 'Education', 'Society', 'Philosophy and religion'].slice(0, 4).map(topic => (
                           <button 
                             key={topic}
-                            className="chip"
+                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
                           >
                             {topic}
                           </button>
                         ))}
                       </div>
                       <button 
-                        className="browse-link"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
-                        <ChevronRight className="chevron-icon" />
+                        <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </div>
                     
                     {/* Science category */}
-                    <div className="section">
-                      <h4 className="section-header">Science, technology and math</h4>
-                      <div className="chip-container">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Science, technology and math</h4>
+                      <div className="flex flex-wrap gap-2 mb-3">
                         {['Medicine and health', 'Technology', 'Biology', 'Physics'].slice(0, 4).map(topic => (
                           <button 
                             key={topic}
-                            className="chip"
+                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
                           >
                             {topic}
                           </button>
                         ))}
                       </div>
                       <button 
-                        className="browse-link"
+                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
-                        <ChevronRight className="chevron-icon" />
+                        <ChevronRight className="w-4 h-4 ml-1" />
                       </button>
                     </div>
                   </div>
@@ -484,14 +492,14 @@ const WikipediaUI = () => {
                 {/* Collections tab content */}
                 {activeTab === 'collections' && (
                   <div>
-                    <h4 className="section-header">Collections</h4>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Collections</h4>
                     
                     {/* Standalone collections as chips - show all */}
-                    <div className="chip-container">
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {standaloneCollections.map(collection => (
                         <button 
                           key={collection}
-                          className="chip"
+                          className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
                         >
                           {collection}
                         </button>
@@ -500,29 +508,29 @@ const WikipediaUI = () => {
                     
                     {/* Collection groups - show all */}
                     {collectionGroups.map((group) => (
-                      <div key={group.id} className="collection-group">
+                      <div key={group.id} className="mb-4">
                         <button 
-                          className="collection-heading"
+                          className="flex items-center mb-2 text-sm font-medium text-gray-700 hover:text-blue-600"
                           onClick={() => toggleGroup(group.id)}
                         >
                           {expandedGroups.includes(group.id) ? 
-                            <ChevronDown className="chevron-icon" /> : 
-                            <ChevronRight className="chevron-icon" />
+                            <ChevronDown className="w-4 h-4 mr-1" /> : 
+                            <ChevronRight className="w-4 h-4 mr-1" />
                           }
                           {group.name}
-                          <span className="collection-count">
+                          <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded-full">
                             {group.items.length}
                           </span>
                         </button>
                         
                         {/* Sub-collections appear when expanded - show all */}
                         {expandedGroups.includes(group.id) && (
-                          <div className="subcollections">
-                            <div className="chip-container">
+                          <div className="pl-6">
+                            <div className="flex flex-wrap gap-2">
                               {group.items.map((item) => (
                                 <button 
                                   key={item}
-                                  className="chip"
+                                  className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
                                 >
                                   {item}
                                 </button>
@@ -536,9 +544,9 @@ const WikipediaUI = () => {
                 )}
               </div>
               
-              <div className="panel-footer">
+              <div className="mt-6 flex justify-end">
                 <button 
-                  className="done-btn"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                   onClick={() => setIsPanelOpen(false)}
                 >
                   Done
