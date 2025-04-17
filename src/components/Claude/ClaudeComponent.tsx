@@ -204,9 +204,9 @@ const WikipediaUI = () => {
       icon: 'document'
     }));
   };
-  // Determine which suggestions to show based on active filter (single selection)
-  const currentFilter = activeFilters[0];
-  const suggestionsData = getSuggestionsForFilter(currentFilter);
+  // Determine which suggestions to show: preview pending filter while panel open, else use active filter
+  const currentFilter = isPanelOpen ? pendingFilter : activeFilters[0];
+  const suggestionsData = getSuggestionsForFilter(currentFilter ?? undefined);
   const filteredSuggestions = suggestionsData.filter(item =>
     !dismissedSuggestions.includes(item.id)
   );
@@ -390,23 +390,21 @@ const WikipediaUI = () => {
                 </button>
               </div>
               
-              {/* Active filters */}
-              {activeFilters.length > 0 && (
+              {/* Selected filter preview */}
+              {pendingFilter && (
                 <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">Active filters</h4>
+                  <h4 className="text-sm font-medium text-gray-500 mb-2">Selected filter</h4>
                   <div className="flex flex-wrap gap-2">
-                    {activeFilters.map(filter => (
-                      <span key={filter} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
-                        {filter}
-                        <button
-                          className="ml-1 focus:outline-none"
-                          onClick={() => toggleFilter(filter)}
-                          aria-label={`Remove ${filter} filter`}
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </span>
-                    ))}
+                    <span key={pendingFilter} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
+                      {pendingFilter}
+                      <button
+                        className="ml-1 focus:outline-none"
+                        onClick={() => togglePendingFilter(pendingFilter)}
+                        aria-label={`Remove ${pendingFilter} filter`}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </span>
                   </div>
                 </div>
               )}
