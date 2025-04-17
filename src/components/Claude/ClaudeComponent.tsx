@@ -313,26 +313,34 @@ const WikipediaUI = () => {
               
               {/* Panel tabs */}
               <div className="flex border-b mb-4 overflow-x-auto">
-                <button 
-                  className={`pb-2 px-4 font-medium ${activeTab === 'all' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'all'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
                   onClick={() => setActiveTab('all')}
                 >
                   All
                 </button>
-                <button 
-                  className={`pb-2 px-4 font-medium ${activeTab === 'collections' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'collections'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
                   onClick={() => setActiveTab('collections')}
                 >
                   Collections
                 </button>
-                <button 
-                  className={`pb-2 px-4 font-medium ${activeTab === 'regions' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'regions'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
                   onClick={() => setActiveTab('regions')}
                 >
                   Regions
                 </button>
-                <button 
-                  className={`pb-2 px-4 font-medium ${activeTab === 'topics' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'topics'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
                   onClick={() => setActiveTab('topics')}
                 >
                   Topics
