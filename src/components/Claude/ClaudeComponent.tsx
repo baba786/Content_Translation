@@ -41,7 +41,7 @@ const WikipediaUI = () => {
   const [activeTab, setActiveTab] = useState('collections');
   const [notification, setNotification] = useState<string | null>(null);
   const [dismissedSuggestions, setDismissedSuggestions] = useState<string[]>([]);
-  const [bookmarkedSuggestions, setBookmarkedSuggestions] = useState<string[]>(['elv']);
+  const [bookmarkedSuggestions, setBookmarkedSuggestions] = useState<string[]>([]);
 
   // Simulated collections data
   const collectionGroups: CollectionGroup[] = [
@@ -282,10 +282,10 @@ const WikipediaUI = () => {
             </div>
             
             {/* Main Suggestions List */}
-            <div className="mt-4">
-              <h3 className="text-lg font-medium text-gray-700 mb-2">
-                Recommended for you
-              </h3>
+              <div className="mt-4">
+                <h3 className="text-lg font-medium text-gray-700 mb-2 text-left">
+                  Recommended for you
+                </h3>
               
               {filteredSuggestions.map(item => (
                 <div key={item.id} className="flex items-start py-3 border-b border-gray-200">
