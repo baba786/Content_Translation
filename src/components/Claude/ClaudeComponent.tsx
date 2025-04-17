@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-// @ts-nocheck
-// @ts-nocheck
-=======
->>>>>>> main
+/// <reference types="vite/client" />
+// Dev: enable vite env types
 import { useState } from 'react';
 import { 
   Search, 
@@ -50,6 +47,8 @@ const WikipediaUI = () => {
   const [notification, setNotification] = useState<string | null>(null);
   const [dismissedSuggestions, setDismissedSuggestions] = useState<string[]>([]);
   const [bookmarkedSuggestions, setBookmarkedSuggestions] = useState<string[]>([]);
+  // Dev mode flag for A/B variant: inline panel in dev vs sidebar in prod
+  const isDev = import.meta.env.MODE === 'dev';
 
   // Simulated collections data
   const collectionGroups: CollectionGroup[] = [
@@ -247,7 +246,7 @@ const WikipediaUI = () => {
       )}
       
       {/* Main Content */}
-      <div className="flex bg-gray-100" style={{ height: '1200px' }}>
+      <div className={`${isDev ? 'flex flex-col' : 'flex'} bg-gray-100`} style={{ height: '1200px' }}>
         {/* Left Sidebar */}
         <div className="w-48 bg-white border-r border-gray-300 p-4 h-full overflow-y-auto">
           <div className="flex items-center text-blue-600 mb-4 cursor-pointer hover:bg-blue-50 px-2 py-1 rounded">
@@ -366,7 +365,9 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl">
+          <div className={isDev
+            ? 'w-full bg-white p-4 mb-4 border border-gray-300 rounded shadow'
+            : 'panel w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl'}>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
