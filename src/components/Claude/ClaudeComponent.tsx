@@ -141,13 +141,13 @@ const WikipediaUI = () => {
   };
 
   const toggleFilter = (filter: string) => {
-    if (activeFilters.includes(filter)) {
-      // unselect filter
-      setActiveFilters([]);
-    } else {
-      // select only this filter
-      setActiveFilters([filter]);
-    }
+  if (activeFilters.includes(filter)) {
+    // unselect filter
+    setActiveFilters(activeFilters.filter(f => f !== filter));
+  } else {
+    // add filter
+    setActiveFilters([...activeFilters, filter]);
+  }
   };
   
   // Toggle panel function - sets activeTab to 'all' when panel opens
@@ -504,9 +504,14 @@ const WikipediaUI = () => {
                       <h4 className="category-header">History and society</h4>
                       <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['History', 'Education', 'Society', 'Philosophy and religion'].slice(0, 4).map(topic => (
-                          <button 
+                          <button
                             key={topic}
-                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              activeFilters.includes(topic)
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => toggleFilter(topic)}
                           >
                             {topic}
                           </button>
@@ -526,9 +531,14 @@ const WikipediaUI = () => {
                       <h4 className="category-header">Science, technology and math</h4>
                       <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['Medicine and health', 'Technology', 'Biology', 'Physics'].slice(0, 4).map(topic => (
-                          <button 
+                          <button
                             key={topic}
-                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              activeFilters.includes(topic)
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => toggleFilter(topic)}
                           >
                             {topic}
                           </button>
@@ -553,9 +563,14 @@ const WikipediaUI = () => {
                     {/* Standalone collections as chips - show all */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {standaloneCollections.map(collection => (
-                        <button 
+                        <button
                           key={collection}
-                          className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                          className={`px-3 py-1 rounded-full text-sm ${
+                            activeFilters.includes(collection)
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          }`}
+                          onClick={() => toggleFilter(collection)}
                         >
                           {collection}
                         </button>
@@ -584,9 +599,14 @@ const WikipediaUI = () => {
                           <div className="pl-6">
                             <div className="flex flex-wrap gap-2">
                               {group.items.map((item) => (
-                                <button 
+                                <button
                                   key={item}
-                                  className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                  className={`px-3 py-1 rounded-full text-sm ${
+                                    activeFilters.includes(item)
+                                      ? 'bg-blue-600 text-white'
+                                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                  }`}
+                                  onClick={() => toggleFilter(item)}
                                 >
                                   {item}
                                 </button>
