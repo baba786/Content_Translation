@@ -424,7 +424,11 @@ const WikipediaUI = () => {
                         {standaloneCollections.slice(0, 3).map(collection => (
                           <button
                             key={collection}
-                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              activeFilters.includes(collection)
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
                             onClick={() => toggleFilter(collection)}
                           >
                             {collection}
@@ -447,7 +451,11 @@ const WikipediaUI = () => {
                         {['Africa', 'Asia', 'Europe'].map(region => (
                           <button
                             key={region}
-                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              activeFilters.includes(region)
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
                             onClick={() => toggleFilter(region)}
                           >
                             {region}
@@ -471,7 +479,11 @@ const WikipediaUI = () => {
                         {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
                           <button
                             key={topic}
-                            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              activeFilters.includes(topic)
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
                             onClick={() => toggleFilter(topic)}
                           >
                             {topic}
