@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { 
-  Search, 
-  X, 
-  ChevronDown, 
-  ChevronRight, 
-  Plus, 
-  Bookmark, 
-  User, 
-  FileText, 
-  Edit, 
-  Check, 
-  Lightbulb, 
-  MoreHorizontal
+import {
+  Search,
+  X,
+  ChevronDown,
+  ChevronRight,
+  Plus,
+  Edit,
+  Check,
+  Lightbulb
 } from 'lucide-react';
+import FilterPills from './FilterPills';
+import SuggestionsList from './SuggestionsList';
 import './ClaudeComponent.css';
 
 // Component interfaces
@@ -282,86 +280,30 @@ const WikipediaUI = () => {
               </div>
             </div>
             
-            {/* Filter Controls */}
-            <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-4">
-              {controlFilters.map(filter => (
-                <button
-                  key={filter}
-                  className={`px-3 py-1 rounded-full flex items-center text-sm ${
-                    ((!isPanelOpen && activeFilters.includes(filter)) ||
-                     (isPanelOpen && pendingFilter === filter))
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700'
-                  }`}
-                  onClick={() => isPanelOpen ? togglePendingFilter(filter) : toggleFilter(filter)}
-                >
-                  {filter === 'For you' && <User className="w-4 h-4 mr-1" />}
-                  {filter === 'Popular' && <Bookmark className="w-4 h-4 mr-1" />}
-                  <span>{filter}</span>
-                </button>
-              ))}
-              <button
-                className={`px-3 py-1 rounded-full flex items-center text-sm ${
-                  isPanelOpen ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                }`}
-                onClick={togglePanel}
-              >
-                <MoreHorizontal className="w-4 h-4 mr-1" />
-                <span>More</span>
-              </button>
-            </div>
-            
-            {/* Main Suggestions List */}
-            <div className="mt-4 text-left flex-1 overflow-y-auto">
-                <h3 className="text-lg font-medium text-gray-700 mb-2 text-left">
-                  Recommended for you
-                </h3>
-              
-              {filteredSuggestions.map(item => (
-                <div key={item.id} className="flex items-start py-3 border-b border-gray-200">
-                  <div className="w-10 h-10 bg-gray-200 rounded-sm flex items-center justify-center mr-3">
-                    {item.image ? (
-                      <div className="w-full h-full bg-gray-400" />
-                    ) : (
-                      <FileText className="w-6 h-6 text-gray-500" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between">
-                      <h4 className="font-medium">{item.title}</h4>
-                      <div className="flex space-x-1">
-                        <button 
-                          className={`text-gray-400 hover:text-blue-600 ${
-                            bookmarkedSuggestions.includes(item.id) ? 'text-blue-600' : ''
-                          }`}
-                          onClick={() => toggleBookmark(item.id)}
-                          aria-label="Bookmark"
-                        >
-                          <Bookmark className="w-5 h-5" fill={bookmarkedSuggestions.includes(item.id) ? 'currentColor' : 'none'} />
-                        </button>
-                        <button 
-                          className="text-gray-400 hover:text-gray-600"
-                          onClick={() => dismissSuggestion(item.id)}
-                          aria-label="Dismiss"
-                        >
-                          <X className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-500">{item.description}</p>
-                    {item.sections && (
-                      <p className="text-xs text-gray-400 mt-1">{item.sections} sections</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <FilterPills
+              controlFilters={controlFilters}
+              isPanelOpen={isPanelOpen}
+              activeFilters={activeFilters}
+              pendingFilter={pendingFilter}
+              toggleFilter={toggleFilter}
+              togglePendingFilter={togglePendingFilter}
+              togglePanel={togglePanel}
+            />
+            <SuggestionsList
+              suggestions={filteredSuggestions}
+              bookmarkedSuggestions={bookmarkedSuggestions}
+              dismissSuggestion={dismissSuggestion}
+              toggleBookmark={toggleBookmark}
+              title="Recommended for you"
+            />
           </div>
         </div>
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl">
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black opacity-50" onClick={() => setIsPanelOpen(false)} />
+            <div className="relative bg-white w-[80%] max-w-4xl max-h-[90vh] flex flex-col overflow-hidden p-6 rounded-lg shadow-2xl">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
@@ -711,6 +653,7 @@ const WikipediaUI = () => {
                   Done
                 </button>
               </div>
+            </div>
           </div>
         )}
       </div>
