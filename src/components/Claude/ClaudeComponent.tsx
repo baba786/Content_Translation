@@ -143,10 +143,10 @@ const WikipediaUI = () => {
   const toggleFilter = (filter: string) => {
   if (activeFilters.includes(filter)) {
     // unselect filter
-    setActiveFilters(activeFilters.filter(f => f !== filter));
+    setActiveFilters([]);
   } else {
-    // add filter
-    setActiveFilters([...activeFilters, filter]);
+    // select only this filter
+    setActiveFilters([filter]);
   }
   };
   
@@ -191,21 +191,10 @@ const WikipediaUI = () => {
       icon: 'document'
     }));
   };
-  // Determine which suggestions to show based on all active filters
-  const aggregatedSuggestions = activeFilters.length === 0
-    ? forYouSuggestions
-    : activeFilters.flatMap(filter => getSuggestionsForFilter(filter));
-
-  // Dedupe suggestions by id
-  const uniqueSuggestions = aggregatedSuggestions.reduce<Suggestion[]>((acc, item) => {
-    if (!acc.some(i => i.id === item.id)) {
-      acc.push(item);
-    }
-    return acc;
-  }, []);
-
-  // Exclude dismissed suggestions
-  const filteredSuggestions = uniqueSuggestions.filter(item =>
+  // Determine which suggestions to show based on active filter (single selection)
+  const currentFilter = activeFilters[0];
+  const suggestionsData = getSuggestionsForFilter(currentFilter);
+  const filteredSuggestions = suggestionsData.filter(item =>
     !dismissedSuggestions.includes(item.id)
   );
 
