@@ -289,6 +289,127 @@ const WikipediaUI = () => {
               togglePendingFilter={togglePendingFilter}
               togglePanel={togglePanel}
             />
+            {isPanelOpen && (
+              <div className="bg-white border border-gray-200 rounded-md p-4 mb-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium">Adjust suggestions</h3>
+                  <button
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={() => setIsPanelOpen(false)}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="flex gap-2 border-b mb-4">
+                  {['all', 'collections', 'regions', 'topics'].map(tab => (
+                    <button
+                      key={tab}
+                      className={`pb-2 px-4 ${activeTab === tab
+                        ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                        : 'font-medium text-gray-500'}`}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                  ))}
+                </div>
+                {pendingFilter && (
+                  <div className="mb-4">
+                    <h4 className="text-sm font-medium text-gray-500 mb-2">Selected filter</h4>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
+                        {pendingFilter}
+                        <button
+                          className="ml-1 focus:outline-none"
+                          onClick={() => togglePendingFilter(pendingFilter)}
+                          aria-label={`Remove ${pendingFilter} filter`}
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div className="mb-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search for a topic"
+                      className="w-full border border-gray-300 rounded px-3 py-2 pl-9"
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                    />
+                    <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  {/* Category previews or full lists based on activeTab */}
+                  {activeTab === 'all' && (
+                    <>
+                      {/* Collections preview */}
+                      <div>
+                        <h4 className="category-header">Collections</h4>
+                        <div className="category-content flex flex-wrap gap-2 mb-3">
+                          {standaloneCollections.slice(0, 3).map(collection => (
+                            <button
+                              key={collection}
+                              className={`px-3 py-1 rounded-full text-sm ${pendingFilter === collection
+                                ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                              onClick={() => togglePendingFilter(collection)}
+                            >
+                              {collection}
+                            </button>
+                          ))}
+                        </div>
+                        <button
+                          className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                          onClick={() => setActiveTab('collections')}
+                        >
+                          <span>Browse all</span>
+                          <ChevronRight className="w-4 h-4 ml-1" />
+                        </button>
+                      </div>
+                      {/* Regions preview */}
+                      <div>
+                        <h4 className="category-header">Regions</h4>
+                        <div className="category-content flex flex-wrap gap-2 mb-3">
+                          {['Africa', 'Asia', 'Europe'].map(region => (
+                            <button
+                              key={region}
+                              className={`px-3 py-1 rounded-full text-sm ${pendingFilter === region
+                                ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                              onClick={() => togglePendingFilter(region)}
+                            >
+                              {region}
+                            </button>
+                          ))}
+                        </div>
+                        <button
+                          className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                          onClick={() => setActiveTab('regions')}
+                        >
+                          <span>Browse all</span>
+                          <ChevronRight className="w-4 h-4 ml-1" />
+                        </button>
+                      </div>
+                      {/* Topics previews (Culture, etc.) */}
+                      {/* ... similar to above ... */}
+                    </>
+                  )}
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    onClick={() => {
+                      setActiveFilters(pendingFilter ? [pendingFilter] : []);
+                      setIsPanelOpen(false);
+                    }}
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            )}
             <SuggestionsList
               suggestions={filteredSuggestions}
               bookmarkedSuggestions={bookmarkedSuggestions}
@@ -299,8 +420,8 @@ const WikipediaUI = () => {
           </div>
         </div>
         
-        {/* Adjust suggestions drawer */}
-        {isPanelOpen && (
+        {/* old sidebar drawer disabled in favor of inline panel */}
+        {false && (
           <>
             <div className="fixed inset-0 bg-black opacity-50" onClick={() => setIsPanelOpen(false)} />
             <div className="fixed inset-y-0 right-0 w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl z-50">
