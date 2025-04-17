@@ -271,7 +271,7 @@ const WikipediaUI = () => {
                 <button
                   key={filter}
                   className={`px-3 py-1 rounded-full flex items-center text-sm ${
-                    activeFilters.includes(filter)
+                    (!isPanelOpen && activeFilters.includes(filter))
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-200 text-gray-700'
                   }`}
