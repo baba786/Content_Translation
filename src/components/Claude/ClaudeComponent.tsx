@@ -299,8 +299,7 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="fixed inset-0 z-50 flex justify-end">
-            <div className="panel w-80 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
+          <div className="panel w-80 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
@@ -561,7 +560,6 @@ const WikipediaUI = () => {
                   Done
                 </button>
               </div>
-            </div>
           </div>
         )}
       </div>
