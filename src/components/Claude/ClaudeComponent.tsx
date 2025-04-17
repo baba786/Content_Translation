@@ -178,9 +178,22 @@ const WikipediaUI = () => {
     }
   };
 
+  // Helper to return suggestions based on current filter (including collections, regions, topics)
+  const getSuggestionsForFilter = (filter?: string): Suggestion[] => {
+    if (!filter || filter === 'For you') return forYouSuggestions;
+    if (filter === 'Popular') return popularSuggestions;
+    // Dummy suggestions for other filters
+    return Array.from({ length: 3 }).map((_, idx) => ({
+      id: `${filter.toLowerCase().replace(/\s+/g, '-')}-${idx}`,
+      title: `${filter} Article ${idx + 1}`,
+      description: `Dummy description for ${filter} Article ${idx + 1}`,
+      tags: [filter],
+      icon: 'document'
+    }));
+  };
   // Determine which suggestions to show based on active filter
-  const suggestionsData =
-    activeFilters.includes('Popular') ? popularSuggestions : forYouSuggestions;
+  const currentFilter = activeFilters[0];
+  const suggestionsData = getSuggestionsForFilter(currentFilter);
   const filteredSuggestions = suggestionsData.filter(item =>
     !dismissedSuggestions.includes(item.id)
   );
@@ -409,9 +422,10 @@ const WikipediaUI = () => {
                       <h4 className="category-header">Collections</h4>
                       <div className="category-content flex flex-wrap gap-2 mb-3">
                         {standaloneCollections.slice(0, 3).map(collection => (
-                          <button 
+                          <button
                             key={collection}
                             className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            onClick={() => toggleFilter(collection)}
                           >
                             {collection}
                           </button>
@@ -431,9 +445,10 @@ const WikipediaUI = () => {
                       <h4 className="category-header">Regions</h4>
                       <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['Africa', 'Asia', 'Europe'].map(region => (
-                          <button 
+                          <button
                             key={region}
                             className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            onClick={() => toggleFilter(region)}
                           >
                             {region}
                           </button>
@@ -454,9 +469,10 @@ const WikipediaUI = () => {
                       <h4 className="category-header">Culture</h4>
                       <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
-                          <button 
+                          <button
                             key={topic}
                             className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            onClick={() => toggleFilter(topic)}
                           >
                             {topic}
                           </button>
