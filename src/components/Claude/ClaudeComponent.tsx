@@ -299,7 +299,7 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel w-80 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
+          <div className="panel w-96 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
@@ -311,7 +311,7 @@ const WikipediaUI = () => {
               </div>
               
               {/* Panel tabs */}
-              <div className="flex flex-wrap gap-2 border-b mb-4">
+              <div className="flex gap-2 border-b mb-4">
                 <button
                   className={`pb-2 px-4 ${activeTab === 'all'
                     ? 'font-bold border-b-2 border-blue-600 text-blue-600'
