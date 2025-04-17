@@ -242,7 +242,7 @@ const WikipediaUI = () => {
       )}
       
       {/* Main Content */}
-      <div className="flex bg-gray-100" style={{ minHeight: '600px' }}>
+      <div className="flex bg-gray-100" style={{ height: '600px' }}>
         {/* Left Sidebar */}
         <div className="w-48 bg-white border-r border-gray-300 p-4">
           <div className="flex items-center text-blue-600 mb-4 cursor-pointer hover:bg-blue-50 px-2 py-1 rounded">
@@ -260,13 +260,13 @@ const WikipediaUI = () => {
         </div>
         
         {/* Main Content Area */}
-        <div className="flex-1 p-4">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 flex items-center hover:bg-blue-700 transition-colors">
+        <div className="flex-1 p-4 h-full flex flex-col">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 flex items-center hover:bg-blue-700 transition-colors flex-none">
             <Plus className="w-4 h-4 mr-1" />
             New translation
           </button>
           
-          <div className="bg-white rounded-md shadow p-6 mb-4">
+          <div className="bg-white rounded-md shadow p-6 mb-4 flex flex-col flex-1 overflow-hidden">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-medium">Suggestions</h2>
               <div className="flex items-center space-x-2">
@@ -311,7 +311,7 @@ const WikipediaUI = () => {
             </div>
             
             {/* Main Suggestions List */}
-          <div className="mt-4 text-left">
+            <div className="mt-4 text-left flex-1 overflow-y-auto">
                 <h3 className="text-lg font-medium text-gray-700 mb-2 text-left">
                   Recommended for you
                 </h3>
