@@ -114,7 +114,11 @@ const WikipediaUI = () => {
   };
 
   const toggleFilter = (filter: string) => {
-    if (!activeFilters.includes(filter)) {
+    if (activeFilters.includes(filter)) {
+      // unselect filter
+      setActiveFilters([]);
+    } else {
+      // select only this filter
       setActiveFilters([filter]);
     }
   };
@@ -340,9 +344,10 @@ const WikipediaUI = () => {
                     {activeFilters.map(filter => (
                       <span key={filter} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
                         {filter}
-                        <button 
-                          className="ml-1 focus:outline-none" 
-                          onClick={() => toggleFilter('For you')}
+                        <button
+                          className="ml-1 focus:outline-none"
+                          onClick={() => toggleFilter(filter)}
+                          aria-label={`Remove ${filter} filter`}
                         >
                           <X className="w-4 h-4" />
                         </button>
