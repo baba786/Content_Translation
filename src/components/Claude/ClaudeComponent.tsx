@@ -161,20 +161,6 @@ const WikipediaUI = () => {
         </div>
       )}
       
-      {/* Wikipedia Header */}
-      <div className="border-b border-gray-300 px-4 py-2 flex items-center justify-between bg-white">
-        <div className="flex items-center space-x-2">
-          <span className="font-serif text-xl font-semibold">W<span className="text-lg">IKIPEDIA</span></span>
-          <span className="text-gray-500 ml-2">Translate page</span>
-        </div>
-        <div className="flex items-center">
-          <div className="mr-2 bg-gray-100 rounded-md px-3 py-1 flex items-center cursor-pointer hover:bg-gray-200">
-            <span className="text-blue-600">User</span>
-            <ChevronDown className="w-4 h-4 ml-1 text-blue-600" />
-          </div>
-        </div>
-      </div>
-      
       {/* Main Content */}
       <div className="flex bg-gray-100" style={{ minHeight: '600px' }}>
         {/* Left Sidebar */}
