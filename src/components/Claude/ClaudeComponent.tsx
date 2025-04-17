@@ -36,6 +36,7 @@ const WikipediaUI = () => {
   // Main state variables for the prototype
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['cee']);
+  const [expandedRegionGroups, setExpandedRegionGroups] = useState<string[]>([]);
   const [activeFilters, setActiveFilters] = useState<string[]>(['For you']);
   // Pending filter inside Adjust Suggestions panel (committed on Done)
   const [pendingFilter, setPendingFilter] = useState<string | null>(activeFilters[0] || null);
@@ -78,6 +79,16 @@ const WikipediaUI = () => {
     'Tamil Wikipedia Article Curation/Medical',
     'Technology Essential Articles'
   ];
+  // Simulated region data (continent -> countries)
+  const regionGroups = [
+    { id: 'africa', name: 'Africa', items: ['Algeria','Angola','Benin','Botswana','Burkina Faso'] },
+    { id: 'asia', name: 'Asia', items: ['China','India','Japan','South Korea','Indonesia'] },
+    { id: 'europe', name: 'Europe', items: ['Germany','France','Spain','Italy','United Kingdom'] },
+    { id: 'americas', name: 'Americas', items: ['United States','Canada','Brazil','Mexico','Argentina'] },
+    { id: 'oceania', name: 'Oceania', items: ['Australia','New Zealand','Fiji','Papua New Guinea','Samoa'] }
+  ];
+  // Search query for regions
+  const [regionSearchQuery, setRegionSearchQuery] = useState('');
 
   // Simulated suggestions/articles data
   const forYouSuggestions: Suggestion[] = [
@@ -168,6 +179,14 @@ const WikipediaUI = () => {
       setPendingFilter(null);
     } else {
       setPendingFilter(filter);
+    }
+  };
+  // Toggle region group collapse
+  const toggleRegionGroup = (group: string) => {
+    if (expandedRegionGroups.includes(group)) {
+      setExpandedRegionGroups(expandedRegionGroups.filter(g => g !== group));
+    } else {
+      setExpandedRegionGroups([...expandedRegionGroups, group]);
     }
   };
 
@@ -626,6 +645,63 @@ const WikipediaUI = () => {
                         )}
                       </div>
                     ))}
+                  </div>
+                )}
+                {/* Regions tab content */}
+                {activeTab === 'regions' && (
+                  <div>
+                    <div className="mb-4">
+                      <input
+                        type="text"
+                        placeholder="Search countries"
+                        className="w-full border border-gray-300 rounded px-3 py-2"
+                        value={regionSearchQuery}
+                        onChange={e => setRegionSearchQuery(e.target.value)}
+                      />
+                    </div>
+                    {regionGroups.map(group => {
+                      const filtered = group.items.filter(item =>
+                        item.toLowerCase().includes(regionSearchQuery.toLowerCase())
+                      );
+                      if (filtered.length === 0) return null;
+                      return (
+                        <div key={group.id} className="mb-4">
+                          <button
+                            className="flex items-center mb-2 text-sm font-medium text-gray-700 hover:text-blue-600"
+                            onClick={() => toggleRegionGroup(group.id)}
+                          >
+                            {expandedRegionGroups.includes(group.id) ? (
+                              <ChevronDown className="w-4 h-4 mr-1" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4 mr-1" />
+                            )}
+                            {group.name}
+                            <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded-full">
+                              {filtered.length}
+                            </span>
+                          </button>
+                          {expandedRegionGroups.includes(group.id) && (
+                            <div className="pl-6">
+                              <div className="flex flex-wrap gap-2">
+                                {filtered.map(item => (
+                                  <button
+                                    key={item}
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                      pendingFilter === item
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
+                                    onClick={() => togglePendingFilter(item)}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
