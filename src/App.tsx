@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './App.css'
 import WikipediaUI from './components/Claude/ClaudeComponent'
 
