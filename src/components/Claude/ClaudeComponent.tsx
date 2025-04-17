@@ -311,7 +311,7 @@ const WikipediaUI = () => {
               </div>
               
               {/* Panel tabs */}
-              <div className="flex border-b mb-4 overflow-x-auto">
+              <div className="flex flex-wrap gap-2 border-b mb-4">
                 <button
                   className={`pb-2 px-4 ${activeTab === 'all'
                     ? 'font-bold border-b-2 border-blue-600 text-blue-600'
