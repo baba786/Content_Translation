@@ -282,7 +282,7 @@ const WikipediaUI = () => {
             </div>
             
             {/* Main Suggestions List */}
-              <div className="mt-4">
+          <div className="mt-4 text-left">
                 <h3 className="text-lg font-medium text-gray-700 mb-2 text-left">
                   Recommended for you
                 </h3>
