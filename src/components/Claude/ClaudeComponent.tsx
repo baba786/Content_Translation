@@ -103,6 +103,33 @@ const WikipediaUI = () => {
       icon: 'document'
     }
   ];
+  // Dummy popular suggestions data
+  const popularSuggestions: Suggestion[] = [
+    {
+      id: 'pop1',
+      title: 'Physics',
+      description: 'Study of matter, energy, and the fundamental forces',
+      tags: ['Popular'],
+      icon: 'document',
+      sections: 12
+    },
+    {
+      id: 'pop2',
+      title: 'Mathematics',
+      description: 'Abstract study of numbers, quantities, and shapes',
+      tags: ['Popular'],
+      icon: 'document',
+      sections: 8
+    },
+    {
+      id: 'pop3',
+      title: 'History',
+      description: 'Investigation of past events and societies',
+      tags: ['Popular'],
+      icon: 'document',
+      sections: 15
+    }
+  ];
 
   // Helper functions
   const toggleGroup = (group: string) => {
@@ -151,8 +178,10 @@ const WikipediaUI = () => {
     }
   };
 
-  // Get the filtered suggestions
-  const filteredSuggestions = forYouSuggestions.filter(item => 
+  // Determine which suggestions to show based on active filter
+  const suggestionsData =
+    activeFilters.includes('Popular') ? popularSuggestions : forYouSuggestions;
+  const filteredSuggestions = suggestionsData.filter(item =>
     !dismissedSuggestions.includes(item.id)
   );
 
