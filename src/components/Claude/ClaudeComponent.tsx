@@ -37,6 +37,8 @@ const WikipediaUI = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['cee']);
   const [activeFilters, setActiveFilters] = useState<string[]>(['For you']);
+  // Pending filter inside Adjust Suggestions panel (committed on Done)
+  const [pendingFilter, setPendingFilter] = useState<string | null>(activeFilters[0] || null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('collections');
   const [notification, setNotification] = useState<string | null>(null);
@@ -140,22 +142,33 @@ const WikipediaUI = () => {
     }
   };
 
+  // Toggle committed filter (top controls)
   const toggleFilter = (filter: string) => {
-  if (activeFilters.includes(filter)) {
-    // unselect filter
-    setActiveFilters([]);
-  } else {
-    // select only this filter
-    setActiveFilters([filter]);
-  }
+    if (activeFilters.includes(filter)) {
+      // unselect filter
+      setActiveFilters([]);
+    } else {
+      // select only this filter
+      setActiveFilters([filter]);
+    }
   };
   
-  // Toggle panel function - sets activeTab to 'all' when panel opens
+  // Toggle Adjust Suggestions panel: initialize pendingFilter on open
   const togglePanel = () => {
     if (!isPanelOpen) {
       setActiveTab('all');
+      setPendingFilter(activeFilters[0] || null);
     }
     setIsPanelOpen(!isPanelOpen);
+  };
+
+  // Toggle pending filter in panel (applies on Done)
+  const togglePendingFilter = (filter: string) => {
+    if (pendingFilter === filter) {
+      setPendingFilter(null);
+    } else {
+      setPendingFilter(filter);
+    }
   };
 
   const showNotification = (message: string) => {
@@ -424,11 +437,11 @@ const WikipediaUI = () => {
                           <button
                             key={collection}
                             className={`px-3 py-1 rounded-full text-sm ${
-                              activeFilters.includes(collection)
+                              pendingFilter === collection
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
-                            onClick={() => toggleFilter(collection)}
+                            onClick={() => togglePendingFilter(collection)}
                           >
                             {collection}
                           </button>
@@ -451,11 +464,11 @@ const WikipediaUI = () => {
                           <button
                             key={region}
                             className={`px-3 py-1 rounded-full text-sm ${
-                              activeFilters.includes(region)
+                              pendingFilter === region
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
-                            onClick={() => toggleFilter(region)}
+                            onClick={() => togglePendingFilter(region)}
                           >
                             {region}
                           </button>
@@ -479,11 +492,11 @@ const WikipediaUI = () => {
                           <button
                             key={topic}
                             className={`px-3 py-1 rounded-full text-sm ${
-                              activeFilters.includes(topic)
+                              pendingFilter === topic
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
-                            onClick={() => toggleFilter(topic)}
+                            onClick={() => togglePendingFilter(topic)}
                           >
                             {topic}
                           </button>
@@ -506,11 +519,11 @@ const WikipediaUI = () => {
                           <button
                             key={topic}
                             className={`px-3 py-1 rounded-full text-sm ${
-                              activeFilters.includes(topic)
+                              pendingFilter === topic
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
-                            onClick={() => toggleFilter(topic)}
+                            onClick={() => togglePendingFilter(topic)}
                           >
                             {topic}
                           </button>
@@ -533,11 +546,11 @@ const WikipediaUI = () => {
                           <button
                             key={topic}
                             className={`px-3 py-1 rounded-full text-sm ${
-                              activeFilters.includes(topic)
+                              pendingFilter === topic
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
-                            onClick={() => toggleFilter(topic)}
+                            onClick={() => togglePendingFilter(topic)}
                           >
                             {topic}
                           </button>
@@ -565,11 +578,11 @@ const WikipediaUI = () => {
                         <button
                           key={collection}
                           className={`px-3 py-1 rounded-full text-sm ${
-                            activeFilters.includes(collection)
+                            pendingFilter === collection
                               ? 'bg-blue-600 text-white'
                               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                           }`}
-                          onClick={() => toggleFilter(collection)}
+                          onClick={() => togglePendingFilter(collection)}
                         >
                           {collection}
                         </button>
@@ -601,11 +614,11 @@ const WikipediaUI = () => {
                                 <button
                                   key={item}
                                   className={`px-3 py-1 rounded-full text-sm ${
-                                    activeFilters.includes(item)
+                                    pendingFilter === item
                                       ? 'bg-blue-600 text-white'
                                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                   }`}
-                                  onClick={() => toggleFilter(item)}
+                                  onClick={() => togglePendingFilter(item)}
                                 >
                                   {item}
                                 </button>
@@ -620,9 +633,13 @@ const WikipediaUI = () => {
               </div>
               
               <div className="mt-6 flex justify-end">
-                <button 
+                <button
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                  onClick={() => setIsPanelOpen(false)}
+                  onClick={() => {
+                    // Commit pending filter on Done
+                    setActiveFilters(pendingFilter ? [pendingFilter] : []);
+                    setIsPanelOpen(false);
+                  }}
                 >
                   Done
                 </button>
