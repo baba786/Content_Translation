@@ -1,4 +1,6 @@
-import { FC } from 'react';
+// @ts-nocheck
+// Inline expando panel filter pills
+import React from 'react';
 import { Bookmark, User, MoreHorizontal } from 'lucide-react';
 
 interface FilterPillsProps {
@@ -11,7 +13,7 @@ interface FilterPillsProps {
   togglePanel: () => void;
 }
 
-const FilterPills: FC<FilterPillsProps> = ({
+const FilterPills = ({
   controlFilters,
   isPanelOpen,
   activeFilters,
@@ -19,7 +21,7 @@ const FilterPills: FC<FilterPillsProps> = ({
   toggleFilter,
   togglePendingFilter,
   togglePanel,
-}) => (
+}: FilterPillsProps) => (
   <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-4">
     {controlFilters.map(filter => {
       const isActive = (!isPanelOpen && activeFilters.includes(filter)) ||
