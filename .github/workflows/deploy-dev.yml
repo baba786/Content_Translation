@@ -1,0 +1,40 @@
+name: Deploy Development to GitHub Pages
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Modify base path for development
+        run: |
+          # Update the base path in vite.config.ts for the development deployment
+          sed -i 's|base: .*/Content_Translation/.|base: "/Content_Translation/dev/"|' vite.config.ts
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: dev  # This is the key - deploy to a subdirectory
