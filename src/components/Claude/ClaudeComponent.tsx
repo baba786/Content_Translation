@@ -242,7 +242,7 @@ const WikipediaUI = () => {
       )}
       
       {/* Main Content */}
-      <div className="flex bg-gray-100" style={{ height: '700px' }}>
+      <div className="flex bg-gray-100" style={{ height: '1200px' }}>
         {/* Left Sidebar */}
         <div className="w-48 bg-white border-r border-gray-300 p-4 h-full overflow-y-auto">
           <div className="flex items-center text-blue-600 mb-4 cursor-pointer hover:bg-blue-50 px-2 py-1 rounded">
@@ -261,7 +261,7 @@ const WikipediaUI = () => {
         
         {/* Main Content Area */}
         <div className="flex-1 p-4 h-full flex flex-col">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded mb-6 flex items-center hover:bg-blue-700 transition-colors flex-none">
+          <button className="self-start bg-blue-600 text-white px-4 py-2 rounded mb-6 flex items-center hover:bg-blue-700 transition-colors flex-none">
             <Plus className="w-4 h-4 mr-1" />
             New translation
           </button>
