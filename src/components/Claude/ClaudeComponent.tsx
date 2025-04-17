@@ -87,8 +87,6 @@ const WikipediaUI = () => {
     { id: 'americas', name: 'Americas', items: ['United States','Canada','Brazil','Mexico','Argentina'] },
     { id: 'oceania', name: 'Oceania', items: ['Australia','New Zealand','Fiji','Papua New Guinea','Samoa'] }
   ];
-  // Search query for regions
-  const [regionSearchQuery, setRegionSearchQuery] = useState('');
 
   // Simulated suggestions/articles data
   const forYouSuggestions: Suggestion[] = [
@@ -650,18 +648,9 @@ const WikipediaUI = () => {
                 {/* Regions tab content */}
                 {activeTab === 'regions' && (
                   <div>
-                    <div className="mb-4">
-                      <input
-                        type="text"
-                        placeholder="Search countries"
-                        className="w-full border border-gray-300 rounded px-3 py-2"
-                        value={regionSearchQuery}
-                        onChange={e => setRegionSearchQuery(e.target.value)}
-                      />
-                    </div>
                     {regionGroups.map(group => {
                       const filtered = group.items.filter(item =>
-                        item.toLowerCase().includes(regionSearchQuery.toLowerCase())
+                        item.toLowerCase().includes(searchQuery.toLowerCase())
                       );
                       if (filtered.length === 0) return null;
                       return (
