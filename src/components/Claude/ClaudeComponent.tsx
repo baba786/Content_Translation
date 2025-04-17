@@ -288,11 +288,12 @@ const WikipediaUI = () => {
                 <button
                   key={filter}
                   className={`px-3 py-1 rounded-full flex items-center text-sm ${
-                    (!isPanelOpen && activeFilters.includes(filter))
+                    ((!isPanelOpen && activeFilters.includes(filter)) ||
+                     (isPanelOpen && pendingFilter === filter))
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-200 text-gray-700'
                   }`}
-                  onClick={() => toggleFilter(filter)}
+                  onClick={() => isPanelOpen ? togglePendingFilter(filter) : toggleFilter(filter)}
                 >
                   {filter === 'For you' && <User className="w-4 h-4 mr-1" />}
                   {filter === 'Popular' && <Bookmark className="w-4 h-4 mr-1" />}
