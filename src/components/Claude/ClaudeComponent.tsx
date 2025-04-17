@@ -299,11 +299,11 @@ const WikipediaUI = () => {
           </div>
         </div>
         
-        {/* Expandable Panel - Only visible when expanded */}
+        {/* Adjust suggestions drawer */}
         {isPanelOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black opacity-50" onClick={() => setIsPanelOpen(false)} />
-            <div className="relative bg-white w-[80%] max-w-4xl max-h-[90vh] flex flex-col overflow-hidden p-6 rounded-lg shadow-2xl">
+          <>
+            <div className="fixed inset-0 bg-black opacity-50" onClick={() => setIsPanelOpen(false)} />
+            <div className="fixed inset-y-0 right-0 w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl z-50">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
@@ -654,7 +654,7 @@ const WikipediaUI = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>
