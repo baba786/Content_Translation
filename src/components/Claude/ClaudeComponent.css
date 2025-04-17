@@ -301,6 +301,17 @@
   box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
 }
 
+.panel .category-header {
+  padding: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.panel .browse-all-link {
+  padding: 0 !important;
+  margin-left: 0 !important;
+}
+
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -415,6 +426,25 @@
   margin-bottom: 0.5rem;
 }
 
+/* Add a new style for category headers in the panel */
+.category-header {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+  padding-left: 0 !important; /* Override any padding */
+  margin-left: 0 !important; /* Override any margin */
+}
+
+.category-content {
+  margin-left: 0.5rem;
+}
+
+.browse-all-link {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
 .chip-container {
   display: flex;
   flex-wrap: wrap;
@@ -501,4 +531,8 @@
 
 .done-btn:hover {
   background-color: #1d4ed8;
+}
+
+.panel, .panel * {
+  text-align: left !important;
 }

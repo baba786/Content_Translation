@@ -13,6 +13,7 @@ import {
   Lightbulb, 
   MoreHorizontal
 } from 'lucide-react';
+import './ClaudeComponent.css';
 
 // Component interfaces
 interface CollectionGroup {
@@ -299,7 +300,7 @@ const WikipediaUI = () => {
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
           <div className="fixed inset-0 z-50 flex justify-end bg-black bg-opacity-30">
-            <div className="w-80 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
+            <div className="panel w-80 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
@@ -378,8 +379,8 @@ const WikipediaUI = () => {
                   <div className="space-y-6">
                     {/* Collections preview */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Collections</h4>
-                      <div className="flex flex-wrap gap-2 mb-3">
+                      <h4 className="category-header">Collections</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
                         {standaloneCollections.slice(0, 3).map(collection => (
                           <button 
                             key={collection}
@@ -390,7 +391,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('collections')}
                       >
                         <span>Browse all</span>
@@ -400,8 +401,8 @@ const WikipediaUI = () => {
                     
                     {/* Regions preview */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Regions</h4>
-                      <div className="flex flex-wrap gap-2 mb-3">
+                      <h4 className="category-header">Regions</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['Africa', 'Asia', 'Europe'].map(region => (
                           <button 
                             key={region}
@@ -412,7 +413,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('regions')}
                       >
                         <span>Browse all</span>
@@ -423,8 +424,8 @@ const WikipediaUI = () => {
                     {/* Topics preview - with three category sections */}
                     {/* Culture category */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Culture</h4>
-                      <div className="flex flex-wrap gap-2 mb-3">
+                      <h4 className="category-header">Culture</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
                           <button 
                             key={topic}
@@ -435,7 +436,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
@@ -445,8 +446,8 @@ const WikipediaUI = () => {
                     
                     {/* History and society category */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">History and society</h4>
-                      <div className="flex flex-wrap gap-2 mb-3">
+                      <h4 className="category-header">History and society</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['History', 'Education', 'Society', 'Philosophy and religion'].slice(0, 4).map(topic => (
                           <button 
                             key={topic}
@@ -457,7 +458,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
@@ -467,8 +468,8 @@ const WikipediaUI = () => {
                     
                     {/* Science category */}
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2 pl-1">Science, technology and math</h4>
-                      <div className="flex flex-wrap gap-2 mb-3">
+                      <h4 className="category-header">Science, technology and math</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
                         {['Medicine and health', 'Technology', 'Biology', 'Physics'].slice(0, 4).map(topic => (
                           <button 
                             key={topic}
@@ -479,7 +480,7 @@ const WikipediaUI = () => {
                         ))}
                       </div>
                       <button 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm pl-1"
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
                         onClick={() => setActiveTab('topics')}
                       >
                         <span>Browse all</span>
