@@ -244,7 +244,7 @@ const WikipediaUI = () => {
       {/* Main Content */}
       <div className="flex bg-gray-100" style={{ height: '600px' }}>
         {/* Left Sidebar */}
-        <div className="w-48 bg-white border-r border-gray-300 p-4">
+        <div className="w-48 bg-white border-r border-gray-300 p-4 h-full overflow-y-auto">
           <div className="flex items-center text-blue-600 mb-4 cursor-pointer hover:bg-blue-50 px-2 py-1 rounded">
             <Lightbulb className="w-5 h-5 mr-2" />
             <span>Suggestions</span>
