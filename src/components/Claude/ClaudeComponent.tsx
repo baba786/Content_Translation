@@ -197,6 +197,10 @@ const WikipediaUI = () => {
   const filteredSuggestions = suggestionsData.filter(item =>
     !dismissedSuggestions.includes(item.id)
   );
+  // Prepare filter controls: place the active filter first, then defaults
+  const primaryFilter = activeFilters[0] || 'For you';
+  const controlFilters = [primaryFilter, 'For you', 'Popular']
+    .filter((f, i, arr) => arr.indexOf(f) === i);
 
   return (
     <div className="w-full font-sans bg-gray-50 rounded-lg overflow-hidden shadow-lg border border-gray-200">
@@ -250,27 +254,22 @@ const WikipediaUI = () => {
             
             {/* Filter Controls */}
             <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-4">
-              <button 
-                className={`px-3 py-1 rounded-full flex items-center text-sm ${
-                  activeFilters.includes('For you') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                }`}
-                onClick={() => toggleFilter('For you')}
-              >
-                <User className="w-4 h-4 mr-1" />
-                <span>For you</span>
-              </button>
-              
-              <button 
-                className={`px-3 py-1 rounded-full flex items-center text-sm ${
-                  activeFilters.includes('Popular') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                }`}
-                onClick={() => toggleFilter('Popular')}
-              >
-                <Bookmark className="w-4 h-4 mr-1" />
-                <span>Popular</span>
-              </button>
-              
-              <button 
+              {controlFilters.map(filter => (
+                <button
+                  key={filter}
+                  className={`px-3 py-1 rounded-full flex items-center text-sm ${
+                    activeFilters.includes(filter)
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-700'
+                  }`}
+                  onClick={() => toggleFilter(filter)}
+                >
+                  {filter === 'For you' && <User className="w-4 h-4 mr-1" />}
+                  {filter === 'Popular' && <Bookmark className="w-4 h-4 mr-1" />}
+                  <span>{filter}</span>
+                </button>
+              ))}
+              <button
                 className={`px-3 py-1 rounded-full flex items-center text-sm ${
                   isPanelOpen ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
                 }`}
