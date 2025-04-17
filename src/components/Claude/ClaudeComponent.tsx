@@ -360,7 +360,7 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel w-96 bg-white h-full overflow-y-auto p-4 border-l border-gray-300 shadow-2xl">
+          <div className="panel w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
@@ -371,6 +371,8 @@ const WikipediaUI = () => {
                 </button>
               </div>
               
+              {/* Scrollable content */}
+              <div className="flex-1 overflow-y-auto">
               {/* Panel tabs */}
               <div className="flex gap-2 border-b mb-4">
                 <button
@@ -695,6 +697,7 @@ const WikipediaUI = () => {
                 )}
               </div>
               
+              </div> {/* end scrollable content */}
               <div className="mt-6 flex justify-end">
                 <button
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
