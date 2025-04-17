@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+<<<<<<< HEAD
     "build": "vite build",
     "build:dev": "vite build --outDir docs/dev --base /Content_Translation/dev/",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -14,6 +15,16 @@
     "deploy": "gh-pages -d dist",
     "predeploy:dev": "npm run build:dev",
     "deploy:dev": "gh-pages -d dist"
+=======
+    "build": "tsc && vite build",
+    "build:dev": "tsc && vite build --mode dev",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d docs",
+    "predeploy:dev": "npm run build:dev",
+    "deploy:dev": "gh-pages -d docs"
+>>>>>>> main
   },
   "dependencies": {
     "lucide-react": "^0.488.0",
