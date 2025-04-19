@@ -246,30 +246,33 @@ const WikipediaUI = () => {
       )}
       
       {/* Main Content */}
-      <div className={`${isDev ? 'flex flex-col' : 'flex'} bg-gray-100`} style={{ height: '1200px' }}>
+      <div className={`${isDev ? 'flex' : 'flex'} bg-gray-100`} style={{ height: '100vh', maxHeight: '1200px' }}>
         {/* Left Sidebar */}
-        <div className="w-48 bg-white border-r border-gray-300 p-4 h-full overflow-y-auto">
-          <div className="flex items-center text-blue-600 mb-4 cursor-pointer hover:bg-blue-50 px-2 py-1 rounded">
-            <Lightbulb className="w-5 h-5 mr-2" />
-            <span>Suggestions</span>
+        <div className="w-48 bg-white border-r border-gray-300 p-4 h-full flex flex-col">
+          <div className="flex-grow overflow-y-auto">
+            <div className="flex items-center text-blue-600 mb-4 cursor-pointer hover:bg-blue-50 px-2 py-1 rounded">
+              <Lightbulb className="w-5 h-5 mr-2" />
+              <span>Suggestions</span>
+            </div>
+            <div className="flex items-center text-gray-600 mb-4 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded">
+              <Edit className="w-5 h-5 mr-2" />
+              <span>In progress</span>
+            </div>
+            <div className="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded">
+              <Check className="w-5 h-5 mr-2" />
+              <span>Published</span>
+            </div>
           </div>
-          <div className="flex items-center text-gray-600 mb-4 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded">
-            <Edit className="w-5 h-5 mr-2" />
-            <span>In progress</span>
-          </div>
-          <div className="flex items-center text-gray-600 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded">
-            <Check className="w-5 h-5 mr-2" />
-            <span>Published</span>
-          </div>
-        </div>
-        
-        {/* Main Content Area */}
-        <div className="flex-1 p-4 h-full flex flex-col">
-          <button className="self-start bg-blue-600 text-white px-4 py-2 rounded mb-6 flex items-center hover:bg-blue-700 transition-colors flex-none">
+          
+          {/* New translation button moved to sidebar */}
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded flex items-center justify-center hover:bg-blue-700 transition-colors mt-4">
             <Plus className="w-4 h-4 mr-1" />
             New translation
           </button>
-          
+        </div>
+        
+        {/* Main Content Area */}
+        <div className="flex-1 p-4 h-full overflow-y-auto">
           <div className="bg-white rounded-md shadow p-6 mb-4 flex flex-col flex-1 overflow-hidden">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-medium">Suggestions</h2>
@@ -366,7 +369,7 @@ const WikipediaUI = () => {
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
           <div className={isDev
-            ? 'w-full bg-white p-4 mb-4 border border-gray-300 rounded shadow'
+            ? 'w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl'
             : 'panel w-96 bg-white h-full flex flex-col overflow-hidden p-4 border-l border-gray-300 shadow-2xl'}>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
