@@ -10,10 +10,8 @@
     "build:dev": "tsc && vite build --mode dev",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d docs",
-    "predeploy:dev": "npm run build:dev",
-    "deploy:dev": "gh-pages -d docs"
+    "deploy": "tsc && vite build && gh-pages -d docs",
+    "deploy:dev": "tsc && vite build --mode dev && gh-pages -d docs/dev -d docs/dev"
   },
   "dependencies": {
     "lucide-react": "^0.488.0",
