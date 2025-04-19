@@ -4,22 +4,20 @@ on:
   push:
     branches:
       - development
+      
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
-    # Ensure we explicitly set up the permissions needed for deployment
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -32,16 +30,9 @@ jobs:
       - name: Build development version
         run: npm run build:dev
       
-      # Setup Pages
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v3
-      
-      # Deploy the docs directory (no need for peaceiris action)
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: './docs/dev'
-      
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/dev
+          destination_dir: dev
