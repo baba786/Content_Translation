@@ -262,8 +262,8 @@ const WikipediaUI = () => {
             {/* Inline Panel - Appears below filters when expanded */}
             {isPanelOpen && (
               <div className="bg-white border border-gray-200 rounded-md p-4 mb-4 mt-4">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium">Adjust suggestions</h3>
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-lg font-medium text-left">Adjust suggestions</h3>
                   <button
                     className="text-gray-500 hover:text-gray-700"
                     onClick={() => setIsPanelOpen(false)}
@@ -271,11 +271,11 @@ const WikipediaUI = () => {
                     <X className="w-5 h-5" />
                   </button>
                 </div>
-                <div className="flex gap-2 border-b mb-4">
+                <div className="flex gap-2 border-b mb-3">
                   {['all', 'collections', 'regions', 'topics'].map(tab => (
                     <button
                       key={tab}
-                      className={`pb-2 px-4 ${activeTab === tab
+                      className={`pb-1 px-3 text-sm ${activeTab === tab
                         ? 'font-bold border-b-2 border-blue-600 text-blue-600'
                         : 'font-medium text-gray-500'}`}
                       onClick={() => setActiveTab(tab)}
@@ -286,8 +286,8 @@ const WikipediaUI = () => {
                 </div>
                 
                 {pendingFilter && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-medium text-gray-500 mb-2">Selected filter</h4>
+                  <div className="mb-3">
+                    <h4 className="text-sm font-medium text-gray-500 mb-1 text-left">Selected filter</h4>
                     <div className="flex flex-wrap gap-2">
                       <span className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
                         {pendingFilter}
@@ -303,23 +303,23 @@ const WikipediaUI = () => {
                   </div>
                 )}
                 
-                <div className="mb-4">
+                <div className="mb-3">
                   <div className="relative">
                     <input 
                       type="text" 
                       placeholder="Search for a topic" 
-                      className="w-full border border-gray-300 rounded px-3 py-2 pl-9"
+                      className="w-full border border-gray-300 rounded px-3 py-1.5 pl-8 text-sm"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
-                    <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                    <Search className="w-4 h-4 text-gray-400 absolute left-2 top-2" />
                   </div>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-3">
                   {/* All tab with preview items and browse links */}
                   {activeTab === 'all' && (
-                    <div className="space-y-6">
+                    <div className="space-y-3">
                       {/* Collections preview */}
                       <div>
                         <h4 className="category-header">Collections</h4>
@@ -327,7 +327,7 @@ const WikipediaUI = () => {
                           {standaloneCollections.slice(0, 3).map(collection => (
                             <button
                               key={collection}
-                              className={`px-3 py-1 rounded-full text-sm ${
+                              className={`px-2 py-0.5 rounded-full text-xs ${
                                 pendingFilter === collection
                                   ? 'bg-blue-600 text-white'
                                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -354,7 +354,7 @@ const WikipediaUI = () => {
                           {['Africa', 'Asia', 'Europe'].map(region => (
                             <button
                               key={region}
-                              className={`px-3 py-1 rounded-full text-sm ${
+                              className={`px-2 py-0.5 rounded-full text-xs ${
                                 pendingFilter === region
                                   ? 'bg-blue-600 text-white'
                                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -382,7 +382,7 @@ const WikipediaUI = () => {
                           {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
                             <button
                               key={topic}
-                              className={`px-3 py-1 rounded-full text-sm ${
+                              className={`px-2 py-0.5 rounded-full text-xs ${
                                 pendingFilter === topic
                                   ? 'bg-blue-600 text-white'
                                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -409,7 +409,7 @@ const WikipediaUI = () => {
                           {['History', 'Education', 'Society', 'Philosophy and religion'].slice(0, 4).map(topic => (
                             <button
                               key={topic}
-                              className={`px-3 py-1 rounded-full text-sm ${
+                              className={`px-2 py-0.5 rounded-full text-xs ${
                                 pendingFilter === topic
                                   ? 'bg-blue-600 text-white'
                                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -431,12 +431,12 @@ const WikipediaUI = () => {
                       
                       {/* Science category */}
                       <div>
-                        <h4 className="category-header">Science, technology and math</h4>
-                        <div className="category-content flex flex-wrap gap-2 mb-3">
+                        <h4 className="category-header">Science and tech</h4>
+                        <div className="category-content flex flex-wrap gap-1 mb-2">
                           {['Medicine and health', 'Technology', 'Biology', 'Physics'].slice(0, 4).map(topic => (
                             <button
                               key={topic}
-                              className={`px-3 py-1 rounded-full text-sm ${
+                              className={`px-2 py-0.5 rounded-full text-xs ${
                                 pendingFilter === topic
                                   ? 'bg-blue-600 text-white'
                                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -485,17 +485,17 @@ const WikipediaUI = () => {
                   {/* Regions tab content */}
                   {activeTab === 'regions' && (
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Regions</h4>
-                      <div className="space-y-4">
+                      <h4 className="text-sm font-medium text-gray-700 mb-1 text-left">Regions</h4>
+                      <div className="space-y-2">
                         {['Africa', 'Asia', 'Europe', 'Americas', 'Oceania'].map(region => (
                           <div key={region}>
-                            <h5 className="text-sm font-medium text-gray-600 mb-2">{region}</h5>
-                            <div className="flex flex-wrap gap-2 mb-3 pl-2">
+                            <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">{region}</h5>
+                            <div className="flex flex-wrap gap-1 mb-2 pl-0">
                               {region === 'Africa' && 
                                 ['Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina Faso'].map(country => (
                                   <button
                                     key={country}
-                                    className={`px-3 py-1 rounded-full text-sm ${
+                                    className={`px-2 py-0.5 rounded-full text-xs ${
                                       pendingFilter === country
                                         ? 'bg-blue-600 text-white'
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -510,7 +510,7 @@ const WikipediaUI = () => {
                                 ['China', 'India', 'Japan', 'South Korea', 'Indonesia'].map(country => (
                                   <button
                                     key={country}
-                                    className={`px-3 py-1 rounded-full text-sm ${
+                                    className={`px-2 py-0.5 rounded-full text-xs ${
                                       pendingFilter === country
                                         ? 'bg-blue-600 text-white'
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -525,7 +525,7 @@ const WikipediaUI = () => {
                                 ['Germany', 'France', 'Spain', 'Italy', 'United Kingdom'].map(country => (
                                   <button
                                     key={country}
-                                    className={`px-3 py-1 rounded-full text-sm ${
+                                    className={`px-2 py-0.5 rounded-full text-xs ${
                                       pendingFilter === country
                                         ? 'bg-blue-600 text-white'
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -540,7 +540,7 @@ const WikipediaUI = () => {
                                 ['United States', 'Canada', 'Brazil', 'Mexico', 'Argentina'].map(country => (
                                   <button
                                     key={country}
-                                    className={`px-3 py-1 rounded-full text-sm ${
+                                    className={`px-2 py-0.5 rounded-full text-xs ${
                                       pendingFilter === country
                                         ? 'bg-blue-600 text-white'
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -555,7 +555,7 @@ const WikipediaUI = () => {
                                 ['Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 'Samoa'].map(country => (
                                   <button
                                     key={country}
-                                    className={`px-3 py-1 rounded-full text-sm ${
+                                    className={`px-2 py-0.5 rounded-full text-xs ${
                                       pendingFilter === country
                                         ? 'bg-blue-600 text-white'
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -576,16 +576,16 @@ const WikipediaUI = () => {
                   {/* Topics tab content */}
                   {activeTab === 'topics' && (
                     <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Topics</h4>
-                      <div className="space-y-4">
+                      <h4 className="text-sm font-medium text-gray-700 mb-1 text-left">Topics</h4>
+                      <div className="space-y-2">
                         {/* Culture category */}
                         <div>
-                          <h5 className="text-sm font-medium text-gray-600 mb-2">Culture</h5>
-                          <div className="flex flex-wrap gap-2 mb-3 pl-2">
+                          <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">Culture</h5>
+                          <div className="flex flex-wrap gap-1 mb-2 pl-0">
                             {['Art', 'Literature', 'Music', 'TV and film', 'Fashion', 'Food', 'Sports', 'Games'].map(topic => (
                               <button
                                 key={topic}
-                                className={`px-3 py-1 rounded-full text-sm ${
+                                className={`px-2 py-0.5 rounded-full text-xs ${
                                   pendingFilter === topic
                                     ? 'bg-blue-600 text-white'
                                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -600,12 +600,12 @@ const WikipediaUI = () => {
                         
                         {/* History and society category */}
                         <div>
-                          <h5 className="text-sm font-medium text-gray-600 mb-2">History and society</h5>
-                          <div className="flex flex-wrap gap-2 mb-3 pl-2">
+                          <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">History and society</h5>
+                          <div className="flex flex-wrap gap-1 mb-2 pl-0">
                             {['History', 'Education', 'Society', 'Philosophy and religion', 'Politics', 'Economics', 'Military', 'Law'].map(topic => (
                               <button
                                 key={topic}
-                                className={`px-3 py-1 rounded-full text-sm ${
+                                className={`px-2 py-0.5 rounded-full text-xs ${
                                   pendingFilter === topic
                                     ? 'bg-blue-600 text-white'
                                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -620,12 +620,12 @@ const WikipediaUI = () => {
                         
                         {/* Science category */}
                         <div>
-                          <h5 className="text-sm font-medium text-gray-600 mb-2">Science, technology and math</h5>
-                          <div className="flex flex-wrap gap-2 mb-3 pl-2">
+                          <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">Science and tech</h5>
+                          <div className="flex flex-wrap gap-1 mb-2 pl-0">
                             {['Medicine and health', 'Technology', 'Biology', 'Physics', 'Chemistry', 'Mathematics', 'Engineering', 'Astronomy'].map(topic => (
                               <button
                                 key={topic}
-                                className={`px-3 py-1 rounded-full text-sm ${
+                                className={`px-2 py-0.5 rounded-full text-xs ${
                                   pendingFilter === topic
                                     ? 'bg-blue-600 text-white'
                                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -642,9 +642,9 @@ const WikipediaUI = () => {
                   )}
                 </div>
                 
-                <div className="mt-6 flex justify-end">
+                <div className="mt-3 flex justify-end">
                   <button
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    className="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700"
                     onClick={() => {
                       // Commit pending filter on Done
                       setActiveFilters(pendingFilter ? [pendingFilter] : []);
