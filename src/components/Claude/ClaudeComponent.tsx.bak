@@ -5,6 +5,7 @@ import {
   Search, 
   X, 
   ChevronDown, 
+  ChevronRight, 
   Plus, 
   Bookmark, 
   User, 
@@ -17,6 +18,12 @@ import {
 import './ClaudeComponent.css';
 
 // Component interfaces
+interface CollectionGroup {
+  id: string;
+  name: string;
+  items: string[];
+}
+
 interface Suggestion {
   id: string;
   title: string;
@@ -30,6 +37,8 @@ interface Suggestion {
 const WikipediaUI = () => {
   // Main state variables for the prototype
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(['cee']);
+  const [expandedRegionGroups, setExpandedRegionGroups] = useState<string[]>([]);
   const [activeFilters, setActiveFilters] = useState<string[]>(['For you']);
   // Pending filter inside Adjust Suggestions panel (committed on Done)
   const [pendingFilter, setPendingFilter] = useState<string>(activeFilters[0] || '');
@@ -39,12 +48,46 @@ const WikipediaUI = () => {
   const [dismissedSuggestions, setDismissedSuggestions] = useState<string[]>([]);
   const [bookmarkedSuggestions, setBookmarkedSuggestions] = useState<string[]>([]);
 
+  // Simulated collections data
+  const collectionGroups: CollectionGroup[] = [
+    {
+      id: 'cee',
+      name: 'CEE Spring 2025',
+      items: [
+        'Albania', 'Armenia', 'Austria', 'Azerbaijan', 'Belarus',
+        'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Cyprus', 'Czechia',
+        'Estonia', 'Georgia', 'Greece', 'Hungary', 'International', 'Iran'
+      ]
+    },
+    {
+      id: 'wlr',
+      name: 'Wiki Loves Ramadan 2025',
+      items: [
+        'Culture', 'Figures 1', 'Figures 2', 'Figures 3', 
+        'General articles 1', 'General articles 2'
+      ]
+    },
+    {
+      id: 'wiki99',
+      name: 'Wiki99',
+      items: ['food', 'sustainability']
+    }
+  ];
+  
   // Standalone collections without sub-items
   const standaloneCollections: string[] = [
     'Climate',
     'Essential Articles',
     'Tamil Wikipedia Article Curation/Medical',
     'Technology Essential Articles'
+  ];
+  // Simulated region data (continent -> countries)
+  const regionGroups = [
+    { id: 'africa', name: 'Africa', items: ['Algeria','Angola','Benin','Botswana','Burkina Faso'] },
+    { id: 'asia', name: 'Asia', items: ['China','India','Japan','South Korea','Indonesia'] },
+    { id: 'europe', name: 'Europe', items: ['Germany','France','Spain','Italy','United Kingdom'] },
+    { id: 'americas', name: 'Americas', items: ['United States','Canada','Brazil','Mexico','Argentina'] },
+    { id: 'oceania', name: 'Oceania', items: ['Australia','New Zealand','Fiji','Papua New Guinea','Samoa'] }
   ];
 
   // Simulated suggestions/articles data
@@ -101,6 +144,15 @@ const WikipediaUI = () => {
     }
   ];
 
+  // Helper functions
+  const toggleGroup = (group: string) => {
+    if (expandedGroups.includes(group)) {
+      setExpandedGroups(expandedGroups.filter(g => g !== group));
+    } else {
+      setExpandedGroups([...expandedGroups, group]);
+    }
+  };
+
   // Toggle committed filter (top controls)
   const toggleFilter = (filter: string) => {
     if (activeFilters.includes(filter)) {
@@ -127,6 +179,14 @@ const WikipediaUI = () => {
       setPendingFilter('');
     } else {
       setPendingFilter(filter);
+    }
+  };
+  // Toggle region group collapse
+  const toggleRegionGroup = (group: string) => {
+    if (expandedRegionGroups.includes(group)) {
+      setExpandedRegionGroups(expandedRegionGroups.filter(g => g !== group));
+    } else {
+      setExpandedRegionGroups([...expandedRegionGroups, group]);
     }
   };
 
@@ -201,13 +261,11 @@ const WikipediaUI = () => {
               <span>Published</span>
             </div>
           </div>
-          
-          {/* No longer needed here - moved to top of content area */}
         </div>
         
         {/* Main Content Area */}
         <div className="flex-1 p-4 h-full overflow-y-auto">
-          {/* Top action button - visible in content area for this design */}
+          {/* Top action button - New translation button at the top of content area */}
           <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center mb-4 hover:bg-blue-700 transition-colors">
             <Plus className="w-4 h-4 mr-1" />
             New translation
@@ -258,9 +316,9 @@ const WikipediaUI = () => {
               </button>
             </div>
             
-            {/* Inline Panel - Appears below filters when expanded */}
+            {/* Adjust Suggestions Panel - immediately below the filters */}
             {isPanelOpen && (
-              <div className="bg-white border border-gray-200 rounded-md p-4 mb-4 mt-4">
+              <div className="bg-white border border-gray-200 rounded-md p-4 mt-4 mb-4">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-medium">Adjust suggestions</h3>
                   <button
@@ -283,7 +341,6 @@ const WikipediaUI = () => {
                     </button>
                   ))}
                 </div>
-                
                 {pendingFilter && (
                   <div className="mb-4">
                     <h4 className="text-sm font-medium text-gray-500 mb-2">Selected filter</h4>
@@ -375,12 +432,12 @@ const WikipediaUI = () => {
               </div>
             )}
             
-            {/* Main Suggestions List - Appears after panel */}
+            {/* Main Suggestions List - "Recommended for you" section appears after the panel */}
             <div className="mt-4 text-left flex-1 overflow-y-auto">
               <h3 className="text-lg font-medium text-gray-700 mb-2 text-left">
                 Recommended for you
               </h3>
-              
+            
               {filteredSuggestions.map(item => (
                 <div key={item.id} className="flex items-start py-3 border-b border-gray-200">
                   <div className="w-10 h-10 bg-gray-200 rounded-sm flex items-center justify-center mr-3">
