@@ -262,15 +262,17 @@ const WikipediaUI = () => {
             </div>
           </div>
           
-          {/* New translation button moved to sidebar */}
-          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded flex items-center justify-center hover:bg-blue-700 transition-colors mt-4">
-            <Plus className="w-4 h-4 mr-1" />
-            New translation
-          </button>
+          {/* No longer needed here - moved to top of content area */}
         </div>
         
         {/* Main Content Area */}
         <div className="flex-1 p-4 h-full overflow-y-auto">
+          {/* Top action button - visible in content area for this design */}
+          <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center mb-4 hover:bg-blue-700 transition-colors">
+            <Plus className="w-4 h-4 mr-1" />
+            New translation
+          </button>
+          
           <div className="bg-white rounded-md shadow p-6 mb-4 flex flex-col flex-1 overflow-hidden">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-medium">Suggestions</h2>
