@@ -368,10 +368,9 @@ const WikipediaUI = () => {
             {/* Modal backdrop */}
             <div className="fixed inset-0 bg-black bg-opacity-25 z-40" onClick={() => setIsPanelOpen(false)}></div>
             {/* Panel */}
-            <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl border-l border-gray-300 z-50">
+            <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl border-l border-gray-300 z-50 flex flex-col">
               {/* Fixed Header */}
-              <div className="absolute top-0 left-0 right-0 bg-white p-4 border-b border-gray-200 z-10">
-                <div className="flex justify-between items-center">
+              <div className="flex-none p-4 bg-white border-b border-gray-200 flex justify-between items-center">
                   <h3 className="text-lg font-medium">Adjust suggestions</h3>
                   <button 
                     className="text-gray-500 hover:text-gray-700"
@@ -382,8 +381,8 @@ const WikipediaUI = () => {
                 </div>
               </div>
               
-              {/* Scrollable content area between fixed header and footer */}
-              <div className="overflow-y-auto p-4 pt-16 pb-20" style={{ height: '100%' }}>
+              {/* Scrollable content area */}
+              <div className="flex-1 overflow-y-auto p-4">
               {/* Panel tabs */}
               <div className="flex gap-2 border-b mb-4">
                 <button
@@ -710,8 +709,8 @@ const WikipediaUI = () => {
               
               </div> {/* end scrollable content */}
               
-              {/* Absolutely positioned footer that's always visible */}
-              <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-between items-center shadow-lg z-10">
+              {/* Fixed Footer */}
+              <div className="flex-none p-4 bg-white border-t border-gray-200 flex justify-between items-center shadow-lg">
                 <div className="text-sm text-gray-500 font-medium">
                   {pendingFilter ? `Selected: ${pendingFilter}` : "No filter selected"}
                 </div>
