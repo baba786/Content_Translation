@@ -364,7 +364,7 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel w-96 bg-white h-full flex flex-col overflow-hidden p-4 pb-0 border-l border-gray-300 shadow-2xl">
+          <div className="panel w-96 bg-white h-full flex flex-col p-4 pt-4 pb-0 border-l border-gray-300 shadow-2xl overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium">Adjust suggestions</h3>
                 <button 
@@ -702,12 +702,12 @@ const WikipediaUI = () => {
               </div>
               
               </div> {/* end scrollable content */}
-              <div className="sticky bottom-0 bg-white border-t border-gray-200 pt-3 pb-3 mt-4 flex justify-between items-center">
+              <div className="sticky-footer flex justify-between items-center">
                 <div className="text-sm text-gray-500">
                   {pendingFilter ? `Selected: ${pendingFilter}` : "No filter selected"}
                 </div>
                 <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded font-medium hover:bg-blue-700 shadow-sm"
+                  className="bg-blue-600 text-white px-5 py-2.5 rounded-md font-medium hover:bg-blue-700 shadow-md transition-all duration-150 text-base animate-subtle-pulse"
                   onClick={() => {
                     // Commit pending filter on Done
                     setActiveFilters(pendingFilter ? [pendingFilter] : []);
