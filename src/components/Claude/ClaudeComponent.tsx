@@ -364,9 +364,13 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel w-96 bg-white h-full flex flex-col border-l border-gray-300 shadow-2xl">
+          <>
+            {/* Modal backdrop */}
+            <div className="fixed inset-0 bg-black bg-opacity-25 z-40" onClick={() => setIsPanelOpen(false)}></div>
+            {/* Panel */}
+            <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl border-l border-gray-300 z-50">
               {/* Fixed Header */}
-              <div className="p-4 border-b border-gray-200">
+              <div className="absolute top-0 left-0 right-0 bg-white p-4 border-b border-gray-200 z-10">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-medium">Adjust suggestions</h3>
                   <button 
@@ -378,8 +382,8 @@ const WikipediaUI = () => {
                 </div>
               </div>
               
-              {/* Scrollable content area with calculated height */}
-              <div className="flex-1 overflow-y-auto p-4" style={{ height: 'calc(100% - 140px)' }}>
+              {/* Scrollable content area between fixed header and footer */}
+              <div className="overflow-y-auto p-4 pt-16 pb-20" style={{ height: '100%' }}>
               {/* Panel tabs */}
               <div className="flex gap-2 border-b mb-4">
                 <button
@@ -706,8 +710,8 @@ const WikipediaUI = () => {
               
               </div> {/* end scrollable content */}
               
-              {/* Fixed Footer - Always visible at bottom */}
-              <div className="bg-white border-t border-gray-200 p-4 flex justify-between items-center shadow-lg">
+              {/* Absolutely positioned footer that's always visible */}
+              <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-between items-center shadow-lg z-10">
                 <div className="text-sm text-gray-500 font-medium">
                   {pendingFilter ? `Selected: ${pendingFilter}` : "No filter selected"}
                 </div>
@@ -723,6 +727,7 @@ const WikipediaUI = () => {
                 </button>
               </div>
           </div>
+          </>
         )}
       </div>
     </div>
