@@ -364,19 +364,22 @@ const WikipediaUI = () => {
         
         {/* Expandable Panel - Only visible when expanded */}
         {isPanelOpen && (
-          <div className="panel w-96 bg-white h-full flex flex-col p-4 pt-4 pb-0 border-l border-gray-300 shadow-2xl overflow-y-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium">Adjust suggestions</h3>
-                <button 
-                  className="text-gray-500 hover:text-gray-700"
-                  onClick={() => setIsPanelOpen(false)}
-                >
-                  <X className="w-5 h-5" />
-                </button>
+          <div className="panel w-96 bg-white h-full flex flex-col border-l border-gray-300 shadow-2xl">
+              {/* Fixed Header */}
+              <div className="p-4 border-b border-gray-200">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium">Adjust suggestions</h3>
+                  <button 
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={() => setIsPanelOpen(false)}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
               
-              {/* Scrollable content */}
-              <div className="flex-1 overflow-y-auto pb-16">
+              {/* Scrollable content area with calculated height */}
+              <div className="flex-1 overflow-y-auto p-4" style={{ height: 'calc(100% - 140px)' }}>
               {/* Panel tabs */}
               <div className="flex gap-2 border-b mb-4">
                 <button
@@ -702,12 +705,14 @@ const WikipediaUI = () => {
               </div>
               
               </div> {/* end scrollable content */}
-              <div className="sticky-footer flex justify-between items-center">
-                <div className="text-sm text-gray-500">
+              
+              {/* Fixed Footer - Always visible at bottom */}
+              <div className="bg-white border-t border-gray-200 p-4 flex justify-between items-center shadow-lg">
+                <div className="text-sm text-gray-500 font-medium">
                   {pendingFilter ? `Selected: ${pendingFilter}` : "No filter selected"}
                 </div>
                 <button
-                  className="bg-blue-600 text-white px-5 py-2.5 rounded-md font-medium hover:bg-blue-700 shadow-md transition-all duration-150 text-base animate-subtle-pulse"
+                  className="bg-blue-600 text-white px-5 py-2.5 rounded-md font-medium hover:bg-blue-700 shadow-md text-base"
                   onClick={() => {
                     // Commit pending filter on Done
                     setActiveFilters(pendingFilter ? [pendingFilter] : []);
