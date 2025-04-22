@@ -1,11 +1,9 @@
-/// <reference types="vite/client" />
-// Dev: enable vite env types
 import { useState } from 'react';
 import { 
   Search, 
   X, 
   ChevronDown, 
-  ChevronRight,
+  ChevronRight, 
   Plus, 
   Bookmark, 
   User, 
@@ -18,6 +16,12 @@ import {
 import './ClaudeComponent.css';
 
 // Component interfaces
+interface CollectionGroup {
+  id: string;
+  name: string;
+  items: string[];
+}
+
 interface Suggestion {
   id: string;
   title: string;
@@ -31,21 +35,57 @@ interface Suggestion {
 const WikipediaUI = () => {
   // Main state variables for the prototype
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(['cee']);
+  const [expandedRegionGroups, setExpandedRegionGroups] = useState<string[]>([]);
   const [activeFilters, setActiveFilters] = useState<string[]>(['For you']);
   // Pending filter inside Adjust Suggestions panel (committed on Done)
-  const [pendingFilter, setPendingFilter] = useState<string>(activeFilters[0] || '');
+  const [pendingFilter, setPendingFilter] = useState<string | null>(activeFilters[0] || null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('collections');
   const [notification, setNotification] = useState<string | null>(null);
   const [dismissedSuggestions, setDismissedSuggestions] = useState<string[]>([]);
   const [bookmarkedSuggestions, setBookmarkedSuggestions] = useState<string[]>([]);
 
+  // Simulated collections data
+  const collectionGroups: CollectionGroup[] = [
+    {
+      id: 'cee',
+      name: 'CEE Spring 2025',
+      items: [
+        'Albania', 'Armenia', 'Austria', 'Azerbaijan', 'Belarus',
+        'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Cyprus', 'Czechia',
+        'Estonia', 'Georgia', 'Greece', 'Hungary', 'International', 'Iran'
+      ]
+    },
+    {
+      id: 'wlr',
+      name: 'Wiki Loves Ramadan 2025',
+      items: [
+        'Culture', 'Figures 1', 'Figures 2', 'Figures 3', 
+        'General articles 1', 'General articles 2'
+      ]
+    },
+    {
+      id: 'wiki99',
+      name: 'Wiki99',
+      items: ['food', 'sustainability']
+    }
+  ];
+  
   // Standalone collections without sub-items
   const standaloneCollections: string[] = [
     'Climate',
     'Essential Articles',
     'Tamil Wikipedia Article Curation/Medical',
     'Technology Essential Articles'
+  ];
+  // Simulated region data (continent -> countries)
+  const regionGroups = [
+    { id: 'africa', name: 'Africa', items: ['Algeria','Angola','Benin','Botswana','Burkina Faso'] },
+    { id: 'asia', name: 'Asia', items: ['China','India','Japan','South Korea','Indonesia'] },
+    { id: 'europe', name: 'Europe', items: ['Germany','France','Spain','Italy','United Kingdom'] },
+    { id: 'americas', name: 'Americas', items: ['United States','Canada','Brazil','Mexico','Argentina'] },
+    { id: 'oceania', name: 'Oceania', items: ['Australia','New Zealand','Fiji','Papua New Guinea','Samoa'] }
   ];
 
   // Simulated suggestions/articles data
@@ -102,6 +142,15 @@ const WikipediaUI = () => {
     }
   ];
 
+  // Helper functions
+  const toggleGroup = (group: string) => {
+    if (expandedGroups.includes(group)) {
+      setExpandedGroups(expandedGroups.filter(g => g !== group));
+    } else {
+      setExpandedGroups([...expandedGroups, group]);
+    }
+  };
+
   // Toggle committed filter (top controls)
   const toggleFilter = (filter: string) => {
     if (activeFilters.includes(filter)) {
@@ -117,7 +166,7 @@ const WikipediaUI = () => {
   const togglePanel = () => {
     if (!isPanelOpen) {
       setActiveTab('all');
-      setPendingFilter(activeFilters[0] || '');
+      setPendingFilter(activeFilters[0] || null);
     }
     setIsPanelOpen(!isPanelOpen);
   };
@@ -125,9 +174,17 @@ const WikipediaUI = () => {
   // Toggle pending filter in panel (applies on Done)
   const togglePendingFilter = (filter: string) => {
     if (pendingFilter === filter) {
-      setPendingFilter('');
+      setPendingFilter(null);
     } else {
       setPendingFilter(filter);
+    }
+  };
+  // Toggle region group collapse
+  const toggleRegionGroup = (group: string) => {
+    if (expandedRegionGroups.includes(group)) {
+      setExpandedRegionGroups(expandedRegionGroups.filter(g => g !== group));
+    } else {
+      setExpandedRegionGroups([...expandedRegionGroups, group]);
     }
   };
 
@@ -203,17 +260,15 @@ const WikipediaUI = () => {
             </div>
           </div>
           
-          {/* No longer needed here - moved to top of content area */}
+          {/* New translation button moved to sidebar */}
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded flex items-center justify-center hover:bg-blue-700 transition-colors mt-4">
+            <Plus className="w-4 h-4 mr-1" />
+            New translation
+          </button>
         </div>
         
         {/* Main Content Area */}
         <div className="flex-1 p-4 h-full overflow-y-auto">
-          {/* Top action button - visible in content area for this design */}
-          <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center mb-4 hover:bg-blue-700 transition-colors">
-            <Plus className="w-4 h-4 mr-1" />
-            New translation
-          </button>
-          
           <div className="bg-white rounded-md shadow p-6 mb-4 flex flex-col flex-1 overflow-hidden">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-medium">Suggestions</h2>
@@ -259,409 +314,11 @@ const WikipediaUI = () => {
               </button>
             </div>
             
-            {/* Inline Panel - Appears below filters when expanded */}
-            {isPanelOpen && (
-              <div className="bg-white border border-gray-200 rounded-md p-4 mb-4 mt-4">
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-lg font-medium text-left">Adjust suggestions</h3>
-                  <button
-                    className="text-gray-500 hover:text-gray-700"
-                    onClick={() => setIsPanelOpen(false)}
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                <div className="flex gap-2 border-b mb-3">
-                  {['all', 'collections', 'regions', 'topics'].map(tab => (
-                    <button
-                      key={tab}
-                      className={`pb-1 px-3 text-sm ${activeTab === tab
-                        ? 'font-bold border-b-2 border-blue-600 text-blue-600'
-                        : 'font-medium text-gray-500'}`}
-                      onClick={() => setActiveTab(tab)}
-                    >
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </button>
-                  ))}
-                </div>
-                
-                {pendingFilter && (
-                  <div className="mb-3">
-                    <h4 className="text-sm font-medium text-gray-500 mb-1 text-left">Selected filter</h4>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
-                        {pendingFilter}
-                        <button
-                          className="ml-1 focus:outline-none"
-                          onClick={() => togglePendingFilter(pendingFilter)}
-                          aria-label={`Remove ${pendingFilter} filter`}
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </span>
-                    </div>
-                  </div>
-                )}
-                
-                <div className="mb-3">
-                  <div className="relative">
-                    <input 
-                      type="text" 
-                      placeholder="Search for a topic" 
-                      className="w-full border border-gray-300 rounded px-3 py-1.5 pl-8 text-sm"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <Search className="w-4 h-4 text-gray-400 absolute left-2 top-2" />
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  {/* All tab with preview items and browse links */}
-                  {activeTab === 'all' && (
-                    <div className="space-y-3">
-                      {/* Collections preview */}
-                      <div>
-                        <h4 className="category-header">Collections</h4>
-                        <div className="category-content flex flex-wrap gap-2 mb-3">
-                          {standaloneCollections.slice(0, 3).map(collection => (
-                            <button
-                              key={collection}
-                              className={`px-2 py-0.5 rounded-full text-xs ${
-                                pendingFilter === collection
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                              }`}
-                              onClick={() => togglePendingFilter(collection)}
-                            >
-                              {collection}
-                            </button>
-                          ))}
-                        </div>
-                        <button 
-                          className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
-                          onClick={() => setActiveTab('collections')}
-                        >
-                          <span>Browse all</span>
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </button>
-                      </div>
-                      
-                      {/* Regions preview */}
-                      <div>
-                        <h4 className="category-header">Regions</h4>
-                        <div className="category-content flex flex-wrap gap-2 mb-3">
-                          {['Africa', 'Asia', 'Europe'].map(region => (
-                            <button
-                              key={region}
-                              className={`px-2 py-0.5 rounded-full text-xs ${
-                                pendingFilter === region
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                              }`}
-                              onClick={() => togglePendingFilter(region)}
-                            >
-                              {region}
-                            </button>
-                          ))}
-                        </div>
-                        <button 
-                          className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
-                          onClick={() => setActiveTab('regions')}
-                        >
-                          <span>Browse all</span>
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </button>
-                      </div>
-                      
-                      {/* Topics preview - with three category sections */}
-                      {/* Culture category */}
-                      <div>
-                        <h4 className="category-header">Culture</h4>
-                        <div className="category-content flex flex-wrap gap-2 mb-3">
-                          {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
-                            <button
-                              key={topic}
-                              className={`px-2 py-0.5 rounded-full text-xs ${
-                                pendingFilter === topic
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                              }`}
-                              onClick={() => togglePendingFilter(topic)}
-                            >
-                              {topic}
-                            </button>
-                          ))}
-                        </div>
-                        <button 
-                          className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
-                          onClick={() => setActiveTab('topics')}
-                        >
-                          <span>Browse all</span>
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </button>
-                      </div>
-                      
-                      {/* History and society category */}
-                      <div>
-                        <h4 className="category-header">History and society</h4>
-                        <div className="category-content flex flex-wrap gap-2 mb-3">
-                          {['History', 'Education', 'Society', 'Philosophy and religion'].slice(0, 4).map(topic => (
-                            <button
-                              key={topic}
-                              className={`px-2 py-0.5 rounded-full text-xs ${
-                                pendingFilter === topic
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                              }`}
-                              onClick={() => togglePendingFilter(topic)}
-                            >
-                              {topic}
-                            </button>
-                          ))}
-                        </div>
-                        <button 
-                          className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
-                          onClick={() => setActiveTab('topics')}
-                        >
-                          <span>Browse all</span>
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </button>
-                      </div>
-                      
-                      {/* Science category */}
-                      <div>
-                        <h4 className="category-header">Science and tech</h4>
-                        <div className="category-content flex flex-wrap gap-1 mb-2">
-                          {['Medicine and health', 'Technology', 'Biology', 'Physics'].slice(0, 4).map(topic => (
-                            <button
-                              key={topic}
-                              className={`px-2 py-0.5 rounded-full text-xs ${
-                                pendingFilter === topic
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                              }`}
-                              onClick={() => togglePendingFilter(topic)}
-                            >
-                              {topic}
-                            </button>
-                          ))}
-                        </div>
-                        <button 
-                          className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
-                          onClick={() => setActiveTab('topics')}
-                        >
-                          <span>Browse all</span>
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Collections tab content */}
-                  {activeTab === 'collections' && (
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Collections</h4>
-                      
-                      {/* Standalone collections as chips - show all */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {standaloneCollections.map(collection => (
-                          <button
-                            key={collection}
-                            className={`px-3 py-1 rounded-full text-sm ${
-                              pendingFilter === collection
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                            onClick={() => togglePendingFilter(collection)}
-                          >
-                            {collection}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Regions tab content */}
-                  {activeTab === 'regions' && (
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-1 text-left">Regions</h4>
-                      <div className="space-y-2">
-                        {['Africa', 'Asia', 'Europe', 'Americas', 'Oceania'].map(region => (
-                          <div key={region}>
-                            <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">{region}</h5>
-                            <div className="flex flex-wrap gap-1 mb-2 pl-0">
-                              {region === 'Africa' && 
-                                ['Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina Faso'].map(country => (
-                                  <button
-                                    key={country}
-                                    className={`px-2 py-0.5 rounded-full text-xs ${
-                                      pendingFilter === country
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    }`}
-                                    onClick={() => togglePendingFilter(country)}
-                                  >
-                                    {country}
-                                  </button>
-                                ))
-                              }
-                              {region === 'Asia' && 
-                                ['China', 'India', 'Japan', 'South Korea', 'Indonesia'].map(country => (
-                                  <button
-                                    key={country}
-                                    className={`px-2 py-0.5 rounded-full text-xs ${
-                                      pendingFilter === country
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    }`}
-                                    onClick={() => togglePendingFilter(country)}
-                                  >
-                                    {country}
-                                  </button>
-                                ))
-                              }
-                              {region === 'Europe' && 
-                                ['Germany', 'France', 'Spain', 'Italy', 'United Kingdom'].map(country => (
-                                  <button
-                                    key={country}
-                                    className={`px-2 py-0.5 rounded-full text-xs ${
-                                      pendingFilter === country
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    }`}
-                                    onClick={() => togglePendingFilter(country)}
-                                  >
-                                    {country}
-                                  </button>
-                                ))
-                              }
-                              {region === 'Americas' && 
-                                ['United States', 'Canada', 'Brazil', 'Mexico', 'Argentina'].map(country => (
-                                  <button
-                                    key={country}
-                                    className={`px-2 py-0.5 rounded-full text-xs ${
-                                      pendingFilter === country
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    }`}
-                                    onClick={() => togglePendingFilter(country)}
-                                  >
-                                    {country}
-                                  </button>
-                                ))
-                              }
-                              {region === 'Oceania' && 
-                                ['Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 'Samoa'].map(country => (
-                                  <button
-                                    key={country}
-                                    className={`px-2 py-0.5 rounded-full text-xs ${
-                                      pendingFilter === country
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    }`}
-                                    onClick={() => togglePendingFilter(country)}
-                                  >
-                                    {country}
-                                  </button>
-                                ))
-                              }
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Topics tab content */}
-                  {activeTab === 'topics' && (
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-1 text-left">Topics</h4>
-                      <div className="space-y-2">
-                        {/* Culture category */}
-                        <div>
-                          <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">Culture</h5>
-                          <div className="flex flex-wrap gap-1 mb-2 pl-0">
-                            {['Art', 'Literature', 'Music', 'TV and film', 'Fashion', 'Food', 'Sports', 'Games'].map(topic => (
-                              <button
-                                key={topic}
-                                className={`px-2 py-0.5 rounded-full text-xs ${
-                                  pendingFilter === topic
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                                onClick={() => togglePendingFilter(topic)}
-                              >
-                                {topic}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        {/* History and society category */}
-                        <div>
-                          <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">History and society</h5>
-                          <div className="flex flex-wrap gap-1 mb-2 pl-0">
-                            {['History', 'Education', 'Society', 'Philosophy and religion', 'Politics', 'Economics', 'Military', 'Law'].map(topic => (
-                              <button
-                                key={topic}
-                                className={`px-2 py-0.5 rounded-full text-xs ${
-                                  pendingFilter === topic
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                                onClick={() => togglePendingFilter(topic)}
-                              >
-                                {topic}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        {/* Science category */}
-                        <div>
-                          <h5 className="text-sm font-medium text-gray-600 mb-1 text-left">Science and tech</h5>
-                          <div className="flex flex-wrap gap-1 mb-2 pl-0">
-                            {['Medicine and health', 'Technology', 'Biology', 'Physics', 'Chemistry', 'Mathematics', 'Engineering', 'Astronomy'].map(topic => (
-                              <button
-                                key={topic}
-                                className={`px-2 py-0.5 rounded-full text-xs ${
-                                  pendingFilter === topic
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
-                                onClick={() => togglePendingFilter(topic)}
-                              >
-                                {topic}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="mt-3 flex justify-end">
-                  <button
-                    className="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700"
-                    onClick={() => {
-                      // Commit pending filter on Done
-                      setActiveFilters(pendingFilter ? [pendingFilter] : []);
-                      setIsPanelOpen(false);
-                    }}
-                  >
-                    Done
-                  </button>
-                </div>
-              </div>
-            )}
-            
-            {/* Main Suggestions List - Appears after panel */}
+            {/* Main Suggestions List */}
             <div className="mt-4 text-left flex-1 overflow-y-auto">
-              <h3 className="text-lg font-medium text-gray-700 mb-2 text-left">
-                Recommended for you
-              </h3>
+                <h3 className="text-lg font-medium text-gray-700 mb-2 text-left">
+                  Recommended for you
+                </h3>
               
               {filteredSuggestions.map(item => (
                 <div key={item.id} className="flex items-start py-3 border-b border-gray-200">
@@ -704,6 +361,372 @@ const WikipediaUI = () => {
             </div>
           </div>
         </div>
+        
+        {/* Expandable Panel - Only visible when expanded */}
+        {isPanelOpen && (
+          <>
+            {/* Modal backdrop */}
+            <div className="fixed inset-0 bg-black bg-opacity-25 z-40" onClick={() => setIsPanelOpen(false)}></div>
+            {/* Panel */}
+            <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl border-l border-gray-300 z-50 flex flex-col">
+              {/* Fixed Header */}
+              <div className="flex-none p-4 bg-white border-b border-gray-200 flex justify-between items-center">
+                  <h3 className="text-lg font-medium">Adjust suggestions</h3>
+                  <button 
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={() => setIsPanelOpen(false)}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              
+              {/* Scrollable content area */}
+              <div className="flex-1 overflow-y-auto p-4">
+              {/* Panel tabs */}
+              <div className="flex gap-2 border-b mb-4">
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'all'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
+                  onClick={() => setActiveTab('all')}
+                >
+                  All
+                </button>
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'collections'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
+                  onClick={() => setActiveTab('collections')}
+                >
+                  Collections
+                </button>
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'regions'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
+                  onClick={() => setActiveTab('regions')}
+                >
+                  Regions
+                </button>
+                <button
+                  className={`pb-2 px-4 ${activeTab === 'topics'
+                    ? 'font-bold border-b-2 border-blue-600 text-blue-600'
+                    : 'font-medium text-gray-500'}`}
+                  onClick={() => setActiveTab('topics')}
+                >
+                  Topics
+                </button>
+              </div>
+              
+              {/* Selected filter preview */}
+              {pendingFilter && (
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-500 mb-2">Selected filter</h4>
+                  <div className="flex flex-wrap gap-2">
+                    <span key={pendingFilter} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-full flex items-center">
+                      {pendingFilter}
+                      <button
+                        className="ml-1 focus:outline-none"
+                        onClick={() => togglePendingFilter(pendingFilter)}
+                        aria-label={`Remove ${pendingFilter} filter`}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              )}
+              
+              {/* Search input */}
+              <div className="mb-4">
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    placeholder="Search for a topic" 
+                    className="w-full border border-gray-300 rounded px-3 py-2 pl-9"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Search className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                {/* All tab with preview items and browse links */}
+                {activeTab === 'all' && (
+                  <div className="space-y-6">
+                    {/* Collections preview */}
+                    <div>
+                      <h4 className="category-header">Collections</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
+                        {standaloneCollections.slice(0, 3).map(collection => (
+                          <button
+                            key={collection}
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              pendingFilter === collection
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => togglePendingFilter(collection)}
+                          >
+                            {collection}
+                          </button>
+                        ))}
+                      </div>
+                      <button 
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        onClick={() => setActiveTab('collections')}
+                      >
+                        <span>Browse all</span>
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </button>
+                    </div>
+                    
+                    {/* Regions preview */}
+                    <div>
+                      <h4 className="category-header">Regions</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
+                        {['Africa', 'Asia', 'Europe'].map(region => (
+                          <button
+                            key={region}
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              pendingFilter === region
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => togglePendingFilter(region)}
+                          >
+                            {region}
+                          </button>
+                        ))}
+                      </div>
+                      <button 
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        onClick={() => setActiveTab('regions')}
+                      >
+                        <span>Browse all</span>
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </button>
+                    </div>
+                    
+                    {/* Topics preview - with three category sections */}
+                    {/* Culture category */}
+                    <div>
+                      <h4 className="category-header">Culture</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
+                        {['Art', 'Literature', 'Music', 'TV and film'].slice(0, 4).map(topic => (
+                          <button
+                            key={topic}
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              pendingFilter === topic
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => togglePendingFilter(topic)}
+                          >
+                            {topic}
+                          </button>
+                        ))}
+                      </div>
+                      <button 
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        onClick={() => setActiveTab('topics')}
+                      >
+                        <span>Browse all</span>
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </button>
+                    </div>
+                    
+                    {/* History and society category */}
+                    <div>
+                      <h4 className="category-header">History and society</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
+                        {['History', 'Education', 'Society', 'Philosophy and religion'].slice(0, 4).map(topic => (
+                          <button
+                            key={topic}
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              pendingFilter === topic
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => togglePendingFilter(topic)}
+                          >
+                            {topic}
+                          </button>
+                        ))}
+                      </div>
+                      <button 
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        onClick={() => setActiveTab('topics')}
+                      >
+                        <span>Browse all</span>
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </button>
+                    </div>
+                    
+                    {/* Science category */}
+                    <div>
+                      <h4 className="category-header">Science, technology and math</h4>
+                      <div className="category-content flex flex-wrap gap-2 mb-3">
+                        {['Medicine and health', 'Technology', 'Biology', 'Physics'].slice(0, 4).map(topic => (
+                          <button
+                            key={topic}
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              pendingFilter === topic
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                            onClick={() => togglePendingFilter(topic)}
+                          >
+                            {topic}
+                          </button>
+                        ))}
+                      </div>
+                      <button 
+                        className="browse-all-link text-blue-600 hover:text-blue-800 flex items-center text-sm"
+                        onClick={() => setActiveTab('topics')}
+                      >
+                        <span>Browse all</span>
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Collections tab content */}
+                {activeTab === 'collections' && (
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Collections</h4>
+                    
+                    {/* Standalone collections as chips - show all */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {standaloneCollections.map(collection => (
+                        <button
+                          key={collection}
+                          className={`px-3 py-1 rounded-full text-sm ${
+                            pendingFilter === collection
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          }`}
+                          onClick={() => togglePendingFilter(collection)}
+                        >
+                          {collection}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    {/* Collection groups - show all */}
+                    {collectionGroups.map((group) => (
+                      <div key={group.id} className="mb-4">
+                        <button 
+                          className="flex items-center mb-2 text-sm font-medium text-gray-700 hover:text-blue-600"
+                          onClick={() => toggleGroup(group.id)}
+                        >
+                          {expandedGroups.includes(group.id) ? 
+                            <ChevronDown className="w-4 h-4 mr-1" /> : 
+                            <ChevronRight className="w-4 h-4 mr-1" />
+                          }
+                          {group.name}
+                          <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded-full">
+                            {group.items.length}
+                          </span>
+                        </button>
+                        
+                        {/* Sub-collections appear when expanded - show all */}
+                        {expandedGroups.includes(group.id) && (
+                          <div className="pl-6">
+                            <div className="flex flex-wrap gap-2">
+                              {group.items.map((item) => (
+                                <button
+                                  key={item}
+                                  className={`px-3 py-1 rounded-full text-sm ${
+                                    pendingFilter === item
+                                      ? 'bg-blue-600 text-white'
+                                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                  }`}
+                                  onClick={() => togglePendingFilter(item)}
+                                >
+                                  {item}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {/* Regions tab content */}
+                {activeTab === 'regions' && (
+                  <div>
+                    {regionGroups.map(group => {
+                      const filtered = group.items.filter(item =>
+                        item.toLowerCase().includes(searchQuery.toLowerCase())
+                      );
+                      if (filtered.length === 0) return null;
+                      return (
+                        <div key={group.id} className="mb-4">
+                          <button
+                            className="flex items-center mb-2 text-sm font-medium text-gray-700 hover:text-blue-600"
+                            onClick={() => toggleRegionGroup(group.id)}
+                          >
+                            {expandedRegionGroups.includes(group.id) ? (
+                              <ChevronDown className="w-4 h-4 mr-1" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4 mr-1" />
+                            )}
+                            {group.name}
+                            <span className="ml-2 text-xs bg-gray-200 px-2 py-0.5 rounded-full">
+                              {filtered.length}
+                            </span>
+                          </button>
+                          {expandedRegionGroups.includes(group.id) && (
+                            <div className="pl-6">
+                              <div className="flex flex-wrap gap-2">
+                                {filtered.map(item => (
+                                  <button
+                                    key={item}
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                      pendingFilter === item
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    }`}
+                                    onClick={() => togglePendingFilter(item)}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+              
+              </div> {/* end scrollable content */}
+              
+              {/* Fixed Footer */}
+              <div className="flex-none p-4 bg-white border-t border-gray-200 flex justify-between items-center shadow-lg">
+                <div className="text-sm text-gray-500 font-medium">
+                  {pendingFilter ? `Selected: ${pendingFilter}` : "No filter selected"}
+                </div>
+                <button
+                  className="bg-blue-600 text-white px-5 py-2.5 rounded-md font-medium hover:bg-blue-700 shadow-md text-base"
+                  onClick={() => {
+                    // Commit pending filter on Done
+                    setActiveFilters(pendingFilter ? [pendingFilter] : []);
+                    setIsPanelOpen(false);
+                  }}
+                >
+                  Done
+                </button>
+              </div>
+          </div>
+          </>
+        )}
       </div>
     </div>
   );
