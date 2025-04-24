@@ -15,6 +15,9 @@ export default defineConfig(({ mode }) => {
     outDir = 'docs/responsive';
   }
   
+  // For debugging
+  console.log(`Using base: ${base} and outDir: ${outDir} for mode: ${mode}`);
+  
   return {
     plugins: [react()],
     base,
