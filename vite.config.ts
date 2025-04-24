@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import fs from 'node:fs'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -18,12 +19,20 @@ export default defineConfig(({ mode }) => {
   // For debugging
   console.log(`Using base: ${base} and outDir: ${outDir} for mode: ${mode}`);
   
+  // Ensure output directory exists
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir, { recursive: true });
+    console.log(`Created directory: ${outDir}`);
+  }
+  
   return {
     plugins: [react()],
     base,
     build: {
       // Output directory based on build mode
-      outDir
+      outDir,
+      // Ensure clean build without overwriting .git folder
+      emptyOutDir: true
     }
   };
 });

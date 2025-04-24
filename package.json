@@ -16,7 +16,7 @@
     "predeploy:dev": "npm run build:dev",
     "deploy:dev": "gh-pages -d docs/dev -e dev",
     "predeploy:responsive": "npm run build:responsive",
-    "deploy:responsive": "gh-pages -d docs/responsive -e responsive"
+    "deploy:responsive": "gh-pages -d docs/responsive -e responsive --add"
   },
   "dependencies": {
     "lucide-react": "^0.488.0",
