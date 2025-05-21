@@ -367,8 +367,8 @@ const WikipediaUI = () => {
           <>
             {/* Modal backdrop */}
             <div className="fixed inset-0 bg-black bg-opacity-25 z-40" onClick={() => setIsPanelOpen(false)}></div>
-            {/* Panel */}
-            <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl border-l border-gray-300 z-50 flex flex-col">
+            {/* Panel positioned above navigation menu */}
+            <div className="fixed left-0 top-0 w-full bg-white shadow-2xl border-b border-gray-300 z-50 flex flex-col" style={{ maxHeight: '80vh' }}>
               {/* Fixed Header */}
               <div className="flex-none p-4 bg-white border-b border-gray-200 flex justify-between items-center">
                   <h3 className="text-lg font-medium">Adjust suggestions</h3>
@@ -724,7 +724,7 @@ const WikipediaUI = () => {
                   Done
                 </button>
               </div>
-          </div>
+            </div>
           </>
         )}
       </div>
